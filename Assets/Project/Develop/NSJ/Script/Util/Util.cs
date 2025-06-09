@@ -9,6 +9,8 @@ public static class Util
     private static Dictionary<float, WaitForSecondsRealtime> _realDelayDic = new Dictionary<float, WaitForSecondsRealtime>();
 
     private static StringBuilder _sb = new StringBuilder();
+
+
     public static WaitForSeconds GetDelay(this float delay)
     {
         if (_delayDic.ContainsKey(delay) == false)
@@ -17,6 +19,8 @@ public static class Util
         }
         return _delayDic[delay];
     }
+
+
     public static WaitForSecondsRealtime GetRealDelay(this float delay)
     {
         if (_realDelayDic.ContainsKey(delay) == false)

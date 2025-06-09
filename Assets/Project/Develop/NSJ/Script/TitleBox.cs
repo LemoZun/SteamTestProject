@@ -19,5 +19,14 @@ public class TitleBox : BaseBox
     private void SubscribesEvent()
     {
         _start.onClick.AddListener(() => Panel.ChangeBox((int)TitlePanel.Box.Start));
+        _exit.onClick.AddListener(ExitGame);
+    }
+    private void ExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif  
     }
 }

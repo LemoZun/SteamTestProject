@@ -5,10 +5,11 @@ public class TitleCanvas : BaseCanvas
     public enum Panel
     {
         Title,
+        Game,
         SIZE
     }
 
-    private void OnEnable()
+     void OnEnable()
     {
         ChangePanel((int)Panel.Title);
     }

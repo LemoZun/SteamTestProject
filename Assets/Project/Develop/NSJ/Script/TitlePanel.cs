@@ -11,7 +11,7 @@ public class TitlePanel : BasePanel
         SIZE,
     }
 
-    void Start()
+    void OnEnable()
     {
         ChangeBox((int)Box.Title);
     }

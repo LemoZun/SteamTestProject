@@ -5,5 +5,6 @@ using UnityEngine;
 public class BaseBox : BaseUI
 {
     [HideInInspector] public BasePanel Panel;
+    [HideInInspector] public BaseCanvas Canvas => Panel.Canvas;
 
 }
