@@ -1,13 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class GameData
 {
-    public int saveNumber;
+    public int SaveNumber;
 
     public string LastSaveTime;
-    public double totalPlayTime;
-    public int score;
+    public double TotalPlayTime;
+
+    public int Score;
+
+    public void AddScore(int value)
+    {
+        Score += value;
+    }
 }

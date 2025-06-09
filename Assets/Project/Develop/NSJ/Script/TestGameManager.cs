@@ -1,17 +1,20 @@
 using System;
 using UnityEngine.Events;
+using UnityEngine;
 
 public class TestGameManager : SingleTon<TestGameManager>
 {
     public GameData Data;
 
     public event UnityAction OnSaveEvent;
+    public event UnityAction<int> OnScoreChangeEvent;
 
-    public bool SaveData(int saveNumber = -1)
+    public bool SaveData(int saveNumber = int.MinValue)
     {
-        if (saveNumber == -1)
+        if (saveNumber == int.MinValue)
         {
-            saveNumber = Data.saveNumber;
+            Debug.Log(Data.SaveNumber);
+            saveNumber = Data.SaveNumber;
         }
 
         DateTime now  = DateTime.Now;
@@ -40,11 +43,17 @@ public class TestGameManager : SingleTon<TestGameManager>
             if (Data == null)
             {
                 Data = new GameData();
-                Data.saveNumber = saveNumber;
+                Data.SaveNumber = saveNumber;
             }
         }
         
         return success;
 
+    }
+
+    public void AddScore(int value)
+    {
+        Data.AddScore(value);
+        OnScoreChangeEvent?.Invoke(Data.Score);
     }
 }
