@@ -8,6 +8,9 @@ using UnityEngine.EventSystems;
 
 public class SnakeController : MonoBehaviour
 {
+    [Header("꼬리 프리팹")] // 임시로 여기에 둠
+    [SerializeField] private Tail tailPrefab;
+    
     // Todo : 먹이를 먹었을때, 죽었을 때 이벤트 만들어야함
 
     [Header("이동하는 주기(단위 : 초)")] 
@@ -30,43 +33,51 @@ public class SnakeController : MonoBehaviour
     [Header("생존 사망 확인")] 
     [SerializeField] private bool _isAlive;
 
-    public bool isAlive
-    {
-        get => _isAlive;
-        set => _isAlive = value;
-    }
+    public bool isAlive { get => _isAlive; set => _isAlive = value; }
 
 
-    public Head head;
+    private Head _head;
+    public Head head { get => _head; private set => _head = value; }
+
+    /*private Tail _firstTail;
+    public Tail firstTail { get => _firstTail; private set => _firstTail = value; }*/
+    
     public LinkedList<Tail> tails;
 
-    Coroutine moveCoroutine;
+    private Coroutine moveCoroutine;
 
     private void Awake()
     {
         isAlive = true;
         direction = Vector2Int.right;
+        tails = new LinkedList<Tail>();
     }
 
     private void Start()
     {
+        head = GetComponentInChildren<Head>();
+        tails.AddLast(GetComponentInChildren<Tail>());
         moveCoroutine = StartCoroutine(MoveRoutine());
     }
 
     private void Update()
     {
         InputDirection();
+        
+        if(Input.GetKeyDown(KeyCode.Space))
+            AddTail();
     }
 
     private void OnDestroy()
     {
         isAlive = false;
+        tails.Clear();
         StopCoroutine(moveCoroutine);
     }
 
     private IEnumerator MoveRoutine()
     {
-        while (isAlive) //죽었을때 조건처리 필요
+        while (isAlive) 
         {
             yield return new WaitForSeconds(moveSpeed);
             Move();
@@ -77,11 +88,14 @@ public class SnakeController : MonoBehaviour
     {
         // Todo : 머리 이동, 꼬리 이동
         // 현재 transform 값에 vector2Int값을 더해주면 됨
+        Vector3 prevPos = head.transform.position;
         head.gameObject.transform.position += new Vector3(direction.x, direction.y, 0);
         
-        // 꼬리 리스트 순회하며 이동
-
-
+        // 후에 생긴 꼬리도 따라오는지 검증 필요
+        foreach (var tail in tails)
+        {
+            (tail.transform.position, prevPos) = (prevPos, tail.transform.position);
+        }
 
     }
 
@@ -95,6 +109,13 @@ public class SnakeController : MonoBehaviour
             direction = Vector2Int.left;
         if(Input.GetKeyDown(KeyCode.RightArrow) && direction != Vector2Int.left)
             direction = Vector2Int.right;
+    }
+
+    private void AddTail()
+    {
+        Tail newTail = Instantiate(tailPrefab, gameObject.transform);
+        newTail.transform.position = tails.Last.Value.transform.position;
+        tails.AddLast(newTail);
     }
 
 
