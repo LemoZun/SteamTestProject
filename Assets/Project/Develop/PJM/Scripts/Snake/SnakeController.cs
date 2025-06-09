@@ -81,6 +81,7 @@ public class SnakeController : MonoBehaviour
         {
             yield return new WaitForSeconds(moveSpeed);
             Move();
+            head.CheckEatOrDie();
         }
     }
 
@@ -116,6 +117,11 @@ public class SnakeController : MonoBehaviour
         Tail newTail = Instantiate(tailPrefab, gameObject.transform);
         newTail.transform.position = tails.Last.Value.transform.position;
         tails.AddLast(newTail);
+    }
+
+    private void CheckEatFood()
+    {
+        
     }
 
 
