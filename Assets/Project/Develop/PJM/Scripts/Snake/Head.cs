@@ -5,28 +5,22 @@ using UnityEngine;
 
 public class Head : MonoBehaviour
 {
+    /*
+    public event Action OnEat;
+    public event Action OnDie;
+    */
 
     public void CheckEatOrDie()
     {
         Collider2D hit = Physics2D.OverlapPoint(transform.position, TempLayerList.TailMask | TempLayerList.FoodMask);
 
-        if(hit == null)
+        if(hit is null)
             return;
         
         if (hit.gameObject.layer == TempLayerList.Food)
-        {
-            Debug.Log("밥 먹음");
-        }
+            TempEventManager.Instance.RaiseFoodEaten();
         
         if (hit.gameObject.layer == TempLayerList.Tail)
-        {
-            Debug.Log("게임 오버");
-        }
-        
+            TempEventManager.Instance.RaiseSnakeDied();
     }
-    /*private void OnCollisionEnter2D(Collision2D other)
-    {
-        if(other.gameObject.CompareTag("Tail"))
-            Debug.Log("꼬리와 충돌함.");
-    }*/
 }

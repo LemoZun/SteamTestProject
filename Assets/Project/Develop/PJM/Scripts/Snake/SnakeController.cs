@@ -58,20 +58,22 @@ public class SnakeController : MonoBehaviour
         head = GetComponentInChildren<Head>();
         tails.AddLast(GetComponentInChildren<Tail>());
         moveCoroutine = StartCoroutine(MoveRoutine());
+        SubscribeEvents();
     }
 
     private void Update()
     {
         InputDirection();
         
-        if(Input.GetKeyDown(KeyCode.Space))
-            AddTail();
+        /*if(Input.GetKeyDown(KeyCode.Space))
+            AddTail();*/
     }
 
     private void OnDestroy()
     {
         isAlive = false;
         tails.Clear();
+        UnsubscribeEvents();
         StopCoroutine(moveCoroutine);
     }
 
@@ -119,9 +121,34 @@ public class SnakeController : MonoBehaviour
         tails.AddLast(newTail);
     }
 
+    private void DieSnake()
+    {
+        isAlive = false;
+        Debug.Log("게임 오버");
+    }
+
     private void CheckEatFood()
     {
         
+    }
+
+    private void SubscribeEvents()
+    {
+        if (head == null)
+        {
+            Debug.LogError("Head is null");
+            return;
+        }
+        TempEventManager.Instance.OnFoodEaten += AddTail;
+        TempEventManager.Instance.OnSnakeDied += DieSnake;
+    }
+
+    private void UnsubscribeEvents()
+    {
+        if (head == null)
+            return;
+        TempEventManager.Instance.OnFoodEaten -= AddTail;
+        TempEventManager.Instance.OnSnakeDied -= DieSnake;
     }
 
 
