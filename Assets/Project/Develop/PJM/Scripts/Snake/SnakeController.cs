@@ -81,7 +81,7 @@ public class SnakeController : MonoBehaviour
     {
         while (isAlive) 
         {
-            yield return new WaitForSeconds(moveSpeed);
+            yield return moveSpeed.GetDelay();
             Move();
             head.CheckEatOrDie();
         }
