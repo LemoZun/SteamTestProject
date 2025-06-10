@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StartBox : BaseBox
+public class StartBox : BaseBox<StartBoxModel>
 {
     public struct SaveSlot
     {
@@ -89,4 +89,9 @@ public class StartBox : BaseBox
             }
         }
     }
+}
+
+public class StartBoxModel
+{
+
 }

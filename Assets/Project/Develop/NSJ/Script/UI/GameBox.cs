@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
-public class GameBox : BaseBox
+public class GameBox : BaseBox<GameBoxModel>
 {
 
     private TMP_Text _score => GetUI<TMP_Text>("ScoreText");
@@ -25,16 +25,20 @@ public class GameBox : BaseBox
     void OnEnable()
     {
         SubscribesTempEvent();
-        RefreshScore();
     }
     void OnDisable()
     {
         UnsubcribesTempEvent();
     }
 
+    protected override void OnModelSet()
+    {
+        Model.Score.Bind(value => _score.text = $"{value}", TestGameManager.Instance.Data.Score);
+    }
+
     private void Init()
     {
-
+        SetModel(new GameBoxModel());
     }
     private void SubscribesEvnet()
     {
@@ -64,12 +68,11 @@ public class GameBox : BaseBox
 
     private void RefreshScore(int score = int.MinValue)
     {
-        if(score == int.MinValue)
-        {
-            if (TestGameManager.Instance.Data == null)
-                return;
-            score = TestGameManager.Instance.Data.Score;
-        }
-        _score.text = $"{score}";
+        Model.Score.Value = score;
     }
+}
+
+public class GameBoxModel
+{
+    public Bindable<int> Score = new Bindable<int>(0);
 }

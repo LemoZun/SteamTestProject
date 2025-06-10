@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TitleBox : BaseBox
+public class TitleBox : BaseBox<TitleBoxModel>
 {
     private Button _start => GetUI<Button>("StartButton");
     private Button _option => GetUI<Button>("OptionButton");
@@ -29,4 +29,9 @@ public class TitleBox : BaseBox
         Application.Quit();
 #endif  
     }
+}
+
+public class TitleBoxModel 
+{
+    
 }
