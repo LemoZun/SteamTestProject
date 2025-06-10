@@ -33,7 +33,7 @@ public class GameBox : BaseBox<GameBoxModel>
 
     protected override void OnModelSet()
     {
-        Model.Score.Bind(value => _score.text = $"{value}", TestGameManager.Instance.Data.Score);
+        Model.Score.Bind(value => _score.text = $"{value}", TestGameManager.Instance.Score);
     }
 
     private void Init()

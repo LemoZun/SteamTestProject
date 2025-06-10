@@ -6,6 +6,8 @@ public class TestGameManager : SingleTon<TestGameManager>
 {
     public GameData Data;
 
+    public int Score => Data.Score;
+
     public event UnityAction OnSaveEvent;
     public event UnityAction<int> OnScoreChangeEvent;
 
