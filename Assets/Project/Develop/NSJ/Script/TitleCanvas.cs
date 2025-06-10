@@ -5,7 +5,6 @@ public class TitleCanvas : BaseCanvas
     public enum Panel
     {
         Title,
-        Game,
         SIZE
     }
 

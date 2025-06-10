@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
@@ -43,18 +44,22 @@ public class GameBox : BaseBox
     }
     private void SubscribesTempEvent()
     {
+        if (TestGameManager.Instance == null)
+            return;
         TestGameManager.Instance.OnScoreChangeEvent += RefreshScore;
     }
 
     private void UnsubcribesTempEvent()
     {
+        if(TestGameManager.Instance == null)
+            return;
         TestGameManager.Instance.OnScoreChangeEvent -= RefreshScore;
     }
 
     private void SaveData()
     {
         TestGameManager.Instance.SaveData();
-        Canvas.ChangePanel((int)TitleCanvas.Panel.Title);
+        SceneManager.LoadScene("TitleScene");
     }
 
     private void RefreshScore(int score = int.MinValue)

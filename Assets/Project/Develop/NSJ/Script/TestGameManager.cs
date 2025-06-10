@@ -13,7 +13,6 @@ public class TestGameManager : SingleTon<TestGameManager>
     {
         if (saveNumber == int.MinValue)
         {
-            Debug.Log(Data.SaveNumber);
             saveNumber = Data.SaveNumber;
         }
 
@@ -35,8 +34,7 @@ public class TestGameManager : SingleTon<TestGameManager>
 
     public bool LoadData(int saveNumber)
     {
-        Data = null;
-        bool success = SaveUtility.Load(ref Data, saveNumber);
+        Data = SaveUtility.Load(saveNumber, out bool success);
 
         if(success == false)
         {

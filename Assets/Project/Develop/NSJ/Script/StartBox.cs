@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StartBox : BaseBox
@@ -75,7 +76,7 @@ public class StartBox : BaseBox
     private void ClickSave(int number)
     {
         TestGameManager.Instance.LoadData(number);
-        Canvas.ChangePanel((int)TitleCanvas.Panel.Game);
+        SceneManager.LoadScene("GameScene");
     }
 
     private void RefreshSaveSlot()
