@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class BaseCanvas : MonoBehaviour
 {
@@ -9,11 +10,13 @@ public class BaseCanvas : MonoBehaviour
         BindPanel();
     }
 
-    public void ChangePanel(int panel)
+    public void ChangePanel<TEnum>(TEnum panel) where TEnum : Enum
     {
+        int panelIndex = Util.ToIndex(panel);
+
         for (int i = 0; i < _panels.Length; i++)
         {
-            _panels[i].gameObject.SetActive(i == panel);
+            _panels[i].gameObject.SetActive(i == panelIndex);
         }
     }
 

@@ -12,6 +12,6 @@ public class GameCanvas : BaseCanvas
 
     void OnEnable()
     {
-        ChangePanel((int)Panel.Game);
+        ChangePanel(Panel.Game);
     }
 }

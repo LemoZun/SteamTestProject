@@ -8,6 +8,6 @@ public class GamePanel : BasePanel
 
     void OnEnable()
     {
-        ChangeBox((int)Box.Game);
+        ChangeBox(Box.Game);
     }
 }

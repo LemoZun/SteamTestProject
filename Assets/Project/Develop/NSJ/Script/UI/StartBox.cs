@@ -37,7 +37,7 @@ public class StartBox : BaseBox
 
     private void SubscribesEvent()
     {
-        _exit.onClick.AddListener(() => Panel.ChangeBox((int)TitlePanel.Box.Title));
+        _exit.onClick.AddListener(() => Panel.ChangeBox(TitlePanel.Box.Title));
         SubscribeSaveButton();
     }
 

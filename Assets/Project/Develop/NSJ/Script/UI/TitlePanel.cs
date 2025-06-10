@@ -13,6 +13,6 @@ public class TitlePanel : BasePanel
 
     void OnEnable()
     {
-        ChangeBox((int)Box.Title);
+        ChangeBox(Box.Title);
     }
 }

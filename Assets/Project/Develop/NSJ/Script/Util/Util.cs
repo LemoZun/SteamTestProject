@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System;
 using UnityEngine;
+using Unity.Collections.LowLevel.Unsafe;
 
 public static class Util
 {
@@ -35,5 +37,14 @@ public static class Util
         _sb.Clear();
         _sb.Append(text);
         return _sb;
+    }
+
+    public static int ToIndex<TEnum>(TEnum e) where TEnum : System.Enum
+    {
+#if UNITY_EDITOR
+        return Convert.ToInt32(e);
+#else
+        return UnsafeUtility.As<TEnum, int>(ref e);
+#endif
     }
 }

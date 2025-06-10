@@ -10,6 +10,6 @@ public class TitleCanvas : BaseCanvas
 
      void OnEnable()
     {
-        ChangePanel((int)Panel.Title);
+        ChangePanel(Panel.Title);
     }
 }

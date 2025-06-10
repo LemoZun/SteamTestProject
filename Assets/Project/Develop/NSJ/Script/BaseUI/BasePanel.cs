@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BasePanel : MonoBehaviour
@@ -11,11 +12,13 @@ public class BasePanel : MonoBehaviour
         BindBox();
     }
 
-    public void ChangeBox(int box)
+    public void ChangeBox<TEnum>(TEnum box) where TEnum : Enum
     {
+        int boxIndex = Util.ToIndex(box);
+
         for (int i = 0; i < _boxs.Length; i++)
         {
-            _boxs[i].gameObject.SetActive(i == box);
+            _boxs[i].gameObject.SetActive(i == boxIndex);
         }
     }
 
