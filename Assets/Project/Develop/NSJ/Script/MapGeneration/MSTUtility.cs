@@ -1,29 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Procedural_Map_Generation
 {
     public static class MSTUtility
     {
-        public static List<Edge> GetMST(List<Triangle> triangles)
-        {
-            List<Edge> edges = new List<Edge>();
-            foreach (Triangle triangle in triangles)
-            {
-                // 각 삼각형의 엣지를 가져와서 edges 리스트에 추가
-                foreach (Edge edge in triangle.Edges)
-                {
-                    // 엣지가 이미 존재하지 않는 경우에만 추가
-                    if (!edges.Contains(edge))
-                    {
-                        edges.Add(edge);
-                    }
-                }
-            }
-            return GetMST(edges);
-        }
-
         public static List<Edge> GetMST(List<Edge> edges)
         {
             List<Edge> mst = new List<Edge>();

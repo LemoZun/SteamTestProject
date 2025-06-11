@@ -8,6 +8,10 @@ namespace Procedural_Map_Generation
         public Vertex A;
         public Vertex B;
 
+        public enum EdgeType { MST, Loop }
+
+        public EdgeType Type;
+
         // EdgeÀÇ ±æÀÌ
         public float LengthSquared => (A.Pos - B.Pos).sqrMagnitude;
 

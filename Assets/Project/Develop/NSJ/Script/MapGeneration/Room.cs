@@ -84,5 +84,14 @@ namespace Procedural_Map_Generation
         {
             GetComponent<SpriteRenderer>().material.color = color;
         }
+
+        /// <summary>
+        /// 방의 중심 그리드 위치를 반환
+        /// </summary>
+        /// <returns></returns>
+        public Vector2Int GetCenterGridPosition()
+        {
+            return Vector2Int.RoundToInt(Vertex.Pos);
+        }
     }
 }

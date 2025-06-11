@@ -430,7 +430,7 @@ GameObject:
   - component: {fileID: 149777814}
   - component: {fileID: 149777813}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: MapGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -466,6 +466,7 @@ MonoBehaviour:
   - {fileID: 202435057}
   - {fileID: 306357871}
   _roomCount: 12
+  _maxAddtionalEdgeCount: 5
 --- !u!4 &149777814
 Transform:
   m_ObjectHideFlags: 0
