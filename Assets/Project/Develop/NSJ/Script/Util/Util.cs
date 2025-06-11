@@ -12,7 +12,6 @@ public static class Util
 
     private static StringBuilder _sb = new StringBuilder();
 
-
     public static WaitForSeconds GetDelay(this float delay)
     {
         if (_delayDic.ContainsKey(delay) == false)
@@ -46,5 +45,10 @@ public static class Util
 #else
         return UnsafeUtility.As<TEnum, int>(ref e);
 #endif
+    }
+
+    public static int RandomRange(int min, int max)
+    {
+        return UnityEngine.Random.Range(min, max);
     }
 }

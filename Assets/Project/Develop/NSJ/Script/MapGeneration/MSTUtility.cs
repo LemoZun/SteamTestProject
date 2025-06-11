@@ -44,8 +44,8 @@ namespace Procedural_Map_Generation
                 if (parent.ContainsKey(edge.B) == false)
                     parent[edge.B] = edge.B;
             }
-            // Find 함수
 
+            // Find 함수
             Vertex Find(Vertex v)
             {
                 if (parent[v] != v)
@@ -56,7 +56,6 @@ namespace Procedural_Map_Generation
             }
 
             // Union 함수
-
             bool Union(Vertex a, Vertex b)
             {
                 Vertex rootA = Find(a);
@@ -69,6 +68,7 @@ namespace Procedural_Map_Generation
             }
 
             // 간선을 순회하며 MST 생성
+
             foreach (Edge edge in edges)
             {
                 if (Union(edge.A, edge.B))

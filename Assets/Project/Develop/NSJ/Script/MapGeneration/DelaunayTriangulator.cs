@@ -5,6 +5,28 @@ namespace Procedural_Map_Generation
 {
     public class DelaunayTriangulator
     {
+        /// <summary>
+        /// Delaunay 삼각분할을 수행합니다.(Room 목록을 입력으로 받음)
+        /// </summary>
+        /// <param name="rooms"></param>
+        /// <returns></returns>
+        public List<Triangle> Triangulate(List<Room> rooms)
+        {
+            // 방의 정점 목록 생성
+            List<Vertex> vertices = new List<Vertex>();
+            foreach (Room room in rooms)
+            {
+                vertices.Add(room.Vertex);
+            }
+            // 삼각형 생성
+            return Triangulate(vertices);
+        }
+
+        /// <summary>
+        /// Delaunay 삼각분할을 수행합니다.(정점 목록을 입력으로 받음)
+        /// </summary>
+        /// <param name="vertices"></param>
+        /// <returns></returns>
         public List<Triangle> Triangulate(List<Vertex> vertices )
         {
             // 삼각형 목록 초기화
@@ -20,6 +42,11 @@ namespace Procedural_Map_Generation
             return triangles;
         }
 
+        /// <summary>
+        /// Delaunay 삼각분할을 수행합니다. (정점 목록과 삼각형 목록을 입력으로 받음)
+        /// </summary>
+        /// <param name="vertices"></param>
+        /// <param name="triangles"></param>
         private void Triangulate(List<Vertex> vertices, List<Triangle> triangles)
         {
             // 슈퍼 삼각형 생성
@@ -53,7 +80,6 @@ namespace Procedural_Map_Generation
                 foreach (Triangle triangle in badTriangles)
                 {
                     // 다른 badTriangles와 공유하지 않는 엣지를 polygon에 추가
-                    Debug.Log(triangle.Edges);
                     foreach (Edge edge in triangle.Edges)
                     {
                         if (!polygon.Contains(edge))

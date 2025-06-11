@@ -16,6 +16,7 @@ namespace Procedural_Map_Generation
             A = a;
             B = b;
         }
+        
 
         /// <summary>
         /// 두 Edge가 동일한지 검사
