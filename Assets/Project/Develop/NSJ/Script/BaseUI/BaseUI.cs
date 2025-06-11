@@ -8,7 +8,7 @@ public class BaseUI : MonoBehaviour
     private Dictionary<string, GameObject> gameObjectDic;
     private Dictionary<(string, System.Type), Component> componentDic;
 
-    void Awake()
+    protected virtual void Awake()
     {
         Bind();
     }
@@ -16,6 +16,8 @@ public class BaseUI : MonoBehaviour
     // 빠른 시간에 게임오브젝트만 바인딩
     protected void Bind()
     {
+        if (gameObjectDic != null) return; // 이미 바인딩된 경우 재시도 X
+
         Transform[] transforms = GetComponentsInChildren<Transform>(true);
         gameObjectDic = new Dictionary<string, GameObject>(transforms.Length << 2);
         foreach (Transform child in transforms)
@@ -41,7 +43,7 @@ public class BaseUI : MonoBehaviour
         componentDic = new Dictionary<(string, System.Type), Component>(components.Length << 4);
         foreach (Component child in components)
         {
-            componentDic.TryAdd((child.gameObject.name, components.GetType()), child);
+            componentDic.TryAdd((child.gameObject.name, child.GetType()), child);
         }
     }
 
@@ -49,6 +51,9 @@ public class BaseUI : MonoBehaviour
     // GetUI("Key") : Key 이름의 게임오브젝트 가져오기
     public GameObject GetUI(in string name)
     {
+        if (gameObjectDic == null)
+            Bind(); // 방어적 호출
+
         gameObjectDic.TryGetValue(name, out GameObject gameObject);
         return gameObject;
     }
@@ -57,19 +62,26 @@ public class BaseUI : MonoBehaviour
     // GetUI<Image>("Key") : Key 이름의 게임오브젝트에서 Image 컴포넌트 가져오기
     public T GetUI<T>(in string name) where T : Component
     {
+        if (gameObjectDic == null || componentDic == null)
+            Bind(); // 방어적 호출
+
         (string, System.Type) key = (name, typeof(T));
 
-        componentDic.TryGetValue(key, out Component component);
-        if (component != null)
+        if (componentDic.TryGetValue(key, out Component component))
+        {
             return component as T;
+        }
 
-        gameObjectDic.TryGetValue(name, out GameObject gameObject);
-        if (gameObject == null)
+        if (!gameObjectDic.TryGetValue(name, out GameObject gameObject))
+        {
             return null;
+        }
 
         component = gameObject.GetComponent<T>();
         if (component == null)
+        {
             return null;
+        }
 
         componentDic.TryAdd(key, component);
         return component as T;

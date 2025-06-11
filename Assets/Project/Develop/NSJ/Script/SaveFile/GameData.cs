@@ -9,9 +9,4 @@ public class GameData
     public double TotalPlayTime;
 
     public int Score;
-
-    public void AddScore(int value)
-    {
-        Score += value;
-    }
 }

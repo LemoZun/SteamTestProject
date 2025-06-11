@@ -29,7 +29,7 @@ namespace Procedural_Map_Generation
                 foreach (var tilePos in corridor)
                 {
                     // 복도 오브젝트 생성 로직(임시 디버그로 찍음)
-                    Debug.DrawLine((Vector2)tilePos, (Vector2)tilePos + Vector2.one * 0.2f, Color.yellow, 5f);
+                    Debug.DrawLine((Vector2)tilePos, (Vector2)tilePos + Vector2.one * 0.2f, Color.yellow, 300f);
                 }
 
             }

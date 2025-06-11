@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GamePanel : BasePanel
 {
-    public enum Box{ Game, SIZE }
+    public enum View{ Game, SIZE }
 
     void OnEnable()
     {
-        ChangeBox(Box.Game);
+        ChangeView(View.Game);
     }
 }

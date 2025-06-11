@@ -5,28 +5,28 @@ public class BasePanel : MonoBehaviour
 {
     [HideInInspector] public BaseCanvas Canvas;
 
-    [SerializeField] protected BaseBox[] _boxs;
+    [SerializeField] protected BaseView[] _views;
 
     void Awake()
     {
-        BindBox();
+        BindView();
     }
 
-    public void ChangeBox<TEnum>(TEnum box) where TEnum : Enum
+    public void ChangeView<TEnum>(TEnum view) where TEnum : Enum
     {
-        int boxIndex = Util.ToIndex(box);
+        int boxIndex = Util.ToIndex(view);
 
-        for (int i = 0; i < _boxs.Length; i++)
+        for (int i = 0; i < _views.Length; i++)
         {
-            _boxs[i].gameObject.SetActive(i == boxIndex);
+            _views[i].gameObject.SetActive(i == boxIndex);
         }
     }
 
-    private void BindBox()
+    private void BindView()
     {
-        foreach (BaseBox box in _boxs)
+        foreach (BaseView view in _views)
         {
-            box.Panel = this;
+            view.Panel = this;
         }
     }
 }

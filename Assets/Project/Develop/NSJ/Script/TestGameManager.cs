@@ -9,7 +9,7 @@ public class TestGameManager : SingleTon<TestGameManager>
     public int Score => Data.Score;
 
     public event UnityAction OnSaveEvent;
-    public event UnityAction<int> OnScoreChangeEvent;
+
 
     public bool SaveData(int saveNumber = int.MinValue)
     {
@@ -48,12 +48,10 @@ public class TestGameManager : SingleTon<TestGameManager>
         }
         
         return success;
-
     }
 
-    public void AddScore(int value)
+    public void SetScore(int value)
     {
-        Data.AddScore(value);
-        OnScoreChangeEvent?.Invoke(Data.Score);
+        Data.Score = value;
     }
 }

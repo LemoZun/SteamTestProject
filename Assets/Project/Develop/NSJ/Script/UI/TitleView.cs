@@ -4,21 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TitleBox : BaseBox<TitleBoxModel>
+public class TitleView : BaseView<TitleBoxModel>
 {
-    private Button _start => GetUI<Button>("StartButton");
-    private Button _option => GetUI<Button>("OptionButton");
-    private Button _exit => GetUI<Button>("ExitButton");
+    private Button _start;
+    private Button _option;
+    private Button _exit;
 
 
     void Start()
     {
+        Init();
         SubscribesEvent();
     }
 
+    private void Init()
+    {
+        _start = GetUI<Button>("StartButton");
+        _option = GetUI<Button>("OptionButton");
+        _exit = GetUI<Button>("ExitButton");
+    }
     private void SubscribesEvent()
     {
-        _start.onClick.AddListener(() => Panel.ChangeBox(TitlePanel.Box.Start));
+        _start.onClick.AddListener(() => Panel.ChangeView(TitlePanel.View.Start));
         _exit.onClick.AddListener(ExitGame);
     }
     private void ExitGame()

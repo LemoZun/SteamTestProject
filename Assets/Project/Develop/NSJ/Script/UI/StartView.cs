@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StartBox : BaseBox<StartBoxModel>
+public class StartView : BaseView<StartBoxModel>
 {
     public struct SaveSlot
     {
@@ -15,7 +15,7 @@ public class StartBox : BaseBox<StartBoxModel>
         public TMP_Text Text;
     }
 
-    private Button _exit => GetUI<Button>("ExitButton");
+    private Button _exit;
 
     private List<SaveSlot> _saves = new List<SaveSlot>();
 
@@ -33,11 +33,12 @@ public class StartBox : BaseBox<StartBoxModel>
     private void Init()
     {
         InitSaveButton();
+        _exit = GetUI<Button>("ExitButton");
     }
 
     private void SubscribesEvent()
     {
-        _exit.onClick.AddListener(() => Panel.ChangeBox(TitlePanel.Box.Title));
+        _exit.onClick.AddListener(() => Panel.ChangeView(TitlePanel.View.Title));
         SubscribeSaveButton();
     }
 

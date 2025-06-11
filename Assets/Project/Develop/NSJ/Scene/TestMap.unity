@@ -465,8 +465,8 @@ MonoBehaviour:
   - {fileID: 2055994801}
   - {fileID: 202435057}
   - {fileID: 306357871}
-  _roomCount: 12
-  _maxAddtionalEdgeCount: 5
+  _roomCount: 6
+  _maxAddtionalEdgeCount: 0
 --- !u!4 &149777814
 Transform:
   m_ObjectHideFlags: 0

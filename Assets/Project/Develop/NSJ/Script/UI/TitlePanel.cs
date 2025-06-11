@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TitlePanel : BasePanel 
 {
-    public enum Box
+    public enum View
     {
         Title,
         Start,
@@ -13,6 +13,6 @@ public class TitlePanel : BasePanel
 
     void OnEnable()
     {
-        ChangeBox(Box.Title);
+        ChangeView(View.Title);
     }
 }
