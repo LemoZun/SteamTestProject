@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class GamePanel : BasePanel
 {
-    public enum View{ Game, SIZE }
+    public enum View{ Game, Game2,SIZE }
 
     void OnEnable()
     {
-        ChangeView(View.Game);
+        //ChangeView(View.Game);
     }
 }

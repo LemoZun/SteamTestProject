@@ -16,15 +16,6 @@ public class ScoreView : BaseView<ScoreViewModel>
 
     public event UnityAction<int> OnScoreButtonClick;
 
-    void OnEnable()
-    {
-        SubscribesTempEvent();
-    }
-    void OnDisable()
-    {
-        UnsubcribesTempEvent();
-    }
-
     protected override void OnViewModelSet()
     {
         Model?.Score.Bind(UpdateText);
@@ -46,17 +37,6 @@ public class ScoreView : BaseView<ScoreViewModel>
         _save.onClick.AddListener(() => SaveData());
         _scoreUp.onClick.AddListener(() => Model.AddScore(1));
         _scoreDown.onClick.AddListener(() => Model.AddScore(-1));
-    }
-    private void SubscribesTempEvent()
-    {
-        if (SaveManager.Instance == null)
-            return;
-    }
-
-    private void UnsubcribesTempEvent()
-    {
-        if (SaveManager.Instance == null)
-            return;
     }
 
     private void SaveData()
@@ -84,6 +64,6 @@ public class ScoreViewModel : BaseViewModel<ScoreModel>
     {
         Score = new Bindable<int>(Model.Score);
 
-        Model.OnScoreChange += (score) => Score.Value = score;
+       // Model.OnScoreChange += (score) => Score.Value = score;
     }
 }

@@ -53,20 +53,6 @@ namespace NSJ_MVVM
             SubscribeEvents();
         }
 
-        /// <summary>
-        /// 뷰가 Awake 단계에서 초기화되는 메서드입니다.
-        /// </summary>
-        protected virtual void InitAwake() { }
-
-        /// <summary>
-        /// 뷰가 Start 단계에서 초기화되는 메서드입니다.
-        /// </summary>
-        protected virtual void InitStart() { }
-        /// <summary>
-        /// 뷰가 이벤트를 구독하는 메서드입니다. 이 메서드는 뷰가 Start 단계에서 호출됩니다.
-        /// </summary>
-        protected virtual void SubscribeEvents() { }
-
         private void OnDestroy()
         {
             ViewResistry<TViewModel>.UnResister(this);
@@ -99,6 +85,21 @@ namespace NSJ_MVVM
             Model = default;
             HasViewModel = false;
         }
+
+        /// <summary>
+        /// 뷰가 Awake 단계에서 초기화되는 메서드입니다.
+        /// </summary>
+        protected virtual void InitAwake() { }
+
+        /// <summary>
+        /// 뷰가 Start 단계에서 초기화되는 메서드입니다.
+        /// </summary>
+        protected virtual void InitStart() { }
+        /// <summary>
+        /// 뷰가 이벤트를 구독하는 메서드입니다. 이 메서드는 뷰가 Start 단계에서 호출됩니다.
+        /// </summary>
+        protected virtual void SubscribeEvents() { }
+
 
         /// <summary>
         /// 뷰모델이 설정되었을 때 호출되는 메서드입니다.

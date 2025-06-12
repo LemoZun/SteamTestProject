@@ -12,6 +12,8 @@ namespace NSJ_MVVM
             where TModel : BaseModel, ICopyable<TModel>, new()
             where TViewModel : BaseViewModel<TModel>, new()
         {
+     
+
             TModel model = new TModel();
             TViewModel viewModel = new TViewModel();
             // ºä¸ðµ¨¿¡ ¸ðµ¨À» ¼³Á¤ÇÕ´Ï´Ù.
@@ -20,6 +22,7 @@ namespace NSJ_MVVM
             model.InitModel();
 
             // ¾Ë¸ÂÀº ºä¿¡ ºä¸ðµ¨ ÀÇÁ¸¼ºÀ» ÁÖÀÔ
+
             ViewResistry<TViewModel>.TryBind(viewModel);
 
             AutoBinding.Bind(model, owner);

@@ -1,4 +1,5 @@
 using NSJ_SaveUtility;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,9 +8,18 @@ namespace NSJ_MVVM
     [System.Serializable]
     public abstract class BaseModel
     {
-        public bool HasViewID;
-        public int ViewID;
+        
+        public bool IsLoaded { get {  return false; } set { _isLoaded = value; OnIsLoadedChanged?.Invoke(value); } }
+        public bool HasViewID { get { return _hasViewID; } set { _hasViewID = value; OnHasViewIDChanged?.Invoke(value); } }
+        public int ViewID { get { return _viewID; } set { _viewID = value; OnViewIDChanged?.Invoke(value); } }
 
+        public event Action<bool> OnIsLoadedChanged;
+        public event Action<bool> OnHasViewIDChanged;
+        public event Action<int> OnViewIDChanged;
+
+        [SerializeField]private bool _isLoaded;
+        [SerializeField]private bool _hasViewID;
+        [SerializeField]private int _viewID;
         /// <summary>
         /// 모델을 초기화하는 메서드입니다.
         /// </summary>
@@ -72,8 +82,17 @@ namespace NSJ_MVVM
         /// </summary>
         private void AllCopyFrom<T>(T model) where T : BaseModel, ICopyable<T>
         {
-            HasViewID = model.HasViewID;
-            ViewID = model.ViewID;
+            if(model == null)
+            {
+                // 저장 데이터가 없는 경우 로드되지 않음 표시
+                IsLoaded = false;
+            }
+            else
+            {
+                IsLoaded = true;
+                HasViewID = model.HasViewID;
+                ViewID = model.ViewID;
+            }
             ((ICopyable<T>)this).CopyFrom(model);
         }
 

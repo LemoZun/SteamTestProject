@@ -7,6 +7,9 @@ namespace NSJ_MVVM
     {
         private T _value;
 
+        /// <summary>
+        /// Bindable<T>의 값입니다. 값이 변경될 때마다 OnValueChanged 이벤트가 호출됩니다.
+        /// </summary>
         public T Value
         {
             get { return _value; }

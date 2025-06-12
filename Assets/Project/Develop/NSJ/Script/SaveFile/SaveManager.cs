@@ -1,6 +1,7 @@
 using NSJ_MVVM;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace NSJ_SaveUtility
@@ -34,6 +35,7 @@ namespace NSJ_SaveUtility
 
         public bool SaveData(int saveNumber = int.MinValue)
         {
+            Data.Models.Clear();
             OnSaveBeforeEvent?.Invoke();
 
             if (saveNumber == int.MinValue)
@@ -41,14 +43,15 @@ namespace NSJ_SaveUtility
                 saveNumber = Data.SaveNumber;
             }
 
+            Debug.Log(Data.Models.Count);
             DateTime now = DateTime.Now;
             Data.LastSaveTime = now.ToString("yyyy-MM-dd HH:mm:ss");
 
             bool success = SaveUtility.Save(ref Data, saveNumber);
 
+
             if (success)
             {
-
                 OnSaveEvent?.Invoke();
             }
 

@@ -1095,7 +1095,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _model:
-    Score: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
+    _score: 0
 --- !u!4 &1568131032
 Transform:
   m_ObjectHideFlags: 0
@@ -1271,7 +1274,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1874263145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1286,7 +1289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Panel: {fileID: 0}
   _hasViewID: 1
-  _viewID: 50
+  _viewID: 30
 --- !u!224 &1874263146
 RectTransform:
   m_ObjectHideFlags: 0

@@ -1,7 +1,10 @@
+using UnityEngine;
+
 namespace NSJ_MVVM
 {
     public class BaseViewModel
     {
+        public Bindable<bool> IsLoaded;
         public Bindable<bool> HasViewID;
         public Bindable<int> ViewID;
     }
@@ -17,9 +20,18 @@ namespace NSJ_MVVM
         {
             Model = model;
 
+            // 뷰모델의 속성을 Bindable로 초기화합니다.
+            IsLoaded = new Bindable<bool>(model.IsLoaded);
             HasViewID = new Bindable<bool>(model.HasViewID);
             ViewID = new Bindable<int>(model.ViewID);
 
+            // 뷰모델의 속성 변경 이벤트를 구독합니다.
+            Model.OnIsLoadedChanged += (isLoaded) => IsLoaded.Value = isLoaded;
+            Model.OnHasViewIDChanged += (hasViewID) => HasViewID.Value = hasViewID;
+            Model.OnViewIDChanged += (viewID) => ViewID.Value = viewID;
+
+            // 모델의 속성을 Bindable로 설정합니다.
+            IsLoaded.Bind(x => Model.IsLoaded = IsLoaded.Value);
             HasViewID.Bind(x => Model.HasViewID = HasViewID.Value);
             ViewID.Bind(x => Model.ViewID = ViewID.Value);
 
