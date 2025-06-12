@@ -20,6 +20,15 @@ namespace NSJTool
                 _poolObject.InitPooledObject();
             }
         }
+        public void SubscribePoolDeactivateEvent()
+        {
+            PoolInfo.OnPoolDeactivate += DestroyObject;
+        }
+        private void DestroyObject()
+        {
+            Destroy(gameObject);
+            PoolInfo.OnPoolDeactivate -= DestroyObject;
+        } 
     }
 
 

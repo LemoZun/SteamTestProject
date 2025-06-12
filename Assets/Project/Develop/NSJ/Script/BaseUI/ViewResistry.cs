@@ -77,7 +77,7 @@ public class ViewResistry<TViewModel>
 
         // 뷰모델이 바인딩된 뷰를 찾았으므로, 해당 뷰에 뷰모델을 설정합니다.
         targetView.SetViewModel(viewModel);
-        Instance._bindings[viewModel] = targetView;
+        Instance._bindings.Add(viewModel, targetView);
         Instance._views.Remove(targetView);
 
         return true;

@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Pool;
+using UnityEngine.Events;
 
 namespace NSJTool
 {
     public class ObjectPool : MonoBehaviour
     {
+        public float MaxTimer = 600f; // 풀 오브젝트 최대 유지 시간
+
+
+
         private static ObjectPool _instance;
         public static ObjectPool Instance
         {
@@ -31,12 +34,14 @@ namespace NSJTool
                 _instance = value;
             }
         }
-        public struct PoolInfo
+        public class PoolInfo
         {
             public Stack<GameObject> Pool;
             public GameObject Prefab;
             public Transform Parent;
             public bool IsActive;
+            public bool IsUsed;
+            public UnityAction OnPoolDeactivate;
         }
 
         /// <summary>
@@ -298,11 +303,15 @@ namespace NSJTool
             }
 
             pool = Instance._poolDic[prefabID];
-            pool.IsActive = true;
+            pool.IsUsed = true;
             Instance._poolDic[prefabID] = pool;
 
             return pool;
         }
+        /// <summary>
+        /// 풀 정보 생성
+        /// </summary>
+
         private static PoolInfo GetPoolInfo(Stack<GameObject> pool, GameObject prefab, Transform parent)
         {
             PoolInfo info = new PoolInfo();
@@ -311,11 +320,16 @@ namespace NSJTool
             info.Prefab = prefab;
             return info;
         }
+        /// <summary>
+        /// 풀 오브젝트 컴포넌트 추가
+        /// </summary>
         private static void AddPoolObjectComponent(GameObject instance, PoolInfo info)
         {
             PooledObject poolObject = instance.GetOrAddComponent<PooledObject>();
-            poolObject.PoolInfo.Prefab = info.Prefab;
+            poolObject.PoolInfo = info;
+            poolObject.SubscribePoolDeactivateEvent();
         }
+
         private static GameObject ProcessGet(GameObject prefab)
         {
             GameObject instance = null;
@@ -442,38 +456,28 @@ namespace NSJTool
             return true;
 
         }
+        /// <summary>
+        /// 풀 오브젝트가 활성화 상태인지 확인하는 코루틴입니다.
+        /// </summary>
         private IEnumerator IsActiveRoutine(int id)
         {
-            float maxTimer = 300;
-            float delayTime = 10;
-            float timer = maxTimer;
+            float delayTime = 10f;
+            float timer = MaxTimer;
             while (true)
             {
                 // 풀 사용했을때 시간 초기화
-                if (Instance._poolDic[id].IsActive == true)
+                if (Instance._poolDic[id].IsUsed == true)
                 {
-                    timer = maxTimer;
+                    timer = MaxTimer;
                     PoolInfo pool = Instance._poolDic[id];
-                    pool.IsActive = false;
-                    Instance._poolDic[id] = pool;
+                    pool.IsUsed = false;
+                    pool.IsActive = true;
                 }
 
                 // 타이머 종료 시 
                 if (timer <= 0)
                 {
-                    if (Instance._poolDic[id].Pool == null)
-                        continue;
-
-                    // 풀(큐) 내부 오브젝트 파괴
-                    int poolCount = Instance._poolDic[id].Pool.Count;
-                    for (int i = 0; i < poolCount; i++)
-                    {
-                        GameObject pooledObject = Instance._poolDic[id].Pool.Pop();
-                        if (pooledObject != null)
-                        {
-                            Destroy(pooledObject);
-                        }
-                    }
+                    ClearPool(id);
                 }
                 else
                 {
@@ -482,6 +486,24 @@ namespace NSJTool
                 yield return GetDelay(delayTime);
             }
         }
+
+        /// <summary>
+        /// 풀 오브젝트를 비우고 초기화합니다.
+        /// </summary>
+        private void ClearPool(int id)
+        {
+            PoolInfo info = Instance._poolDic[id];
+
+            if (info.IsActive == true)
+                return;
+
+            info.OnPoolDeactivate?.Invoke();
+
+
+            info.Pool = new Stack<GameObject>();
+            info.IsActive = false;
+        }
+
 
         private WaitForSeconds GetDelay(float time)
         {
