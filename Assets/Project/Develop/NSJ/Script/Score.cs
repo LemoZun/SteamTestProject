@@ -10,29 +10,29 @@ public class Score : MonoBehaviour
 
     private void Awake()
     {
-        _model = ModelFactory.CreateModel<ScoreModel, ScoreViewModel>();
+        _model = ModelFactory.CreateModel<ScoreModel, ScoreViewModel>(this);
     }
     private void Start()
     {
-        _model.OnScoreChange += UpdateScore;
-    }
-
-    private void UpdateScore(int value)
-    {
-        _model.Score = value;
+        _model.LoadData<ScoreModel>();
     }
 }
 
 
 [System.Serializable]
-public class ScoreModel : BaseModel
+public class ScoreModel : BaseModel, ICopyable<ScoreModel>
 {
-    public int Score;
+    [SerializeField]private int _score;
+    public int Score { get { return _score; } set { _score = value; OnScoreChange?.Invoke(value); } }
     public Action<int> OnScoreChange;
 
     public void ChangeScore(int value)
     {
         Score += value;
-        OnScoreChange?.Invoke(Score);
+    }
+
+    public void CopyFrom(ScoreModel model)
+    {
+        Score = model.Score;
     }
 }

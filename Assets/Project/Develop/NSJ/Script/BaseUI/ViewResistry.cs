@@ -60,7 +60,6 @@ public class ViewResistry<TViewModel> where TViewModel : BaseViewModel
             // 뷰모델이 ViewID를 가지고 있는지 확인합니다.
             if (view.HasViewID == true)
             {
-                Debug.Log("뷰모델 true");
                 // ViewID값이 존재하는 경우 해당 뷰모델을 꺼내서 뷰에 설정합니다.
                 for (int i = 0; i < Instance._delayStroage.Count; i++)
                 {
@@ -76,7 +75,6 @@ public class ViewResistry<TViewModel> where TViewModel : BaseViewModel
             }
             else
             {
-                Debug.Log("뷰모델 false");
                 // VIewID값이 Default인 경우, 지연 저장 리스트에서 첫번째 뷰모델을 꺼내서 뷰에 설정합니다.
                 view.SetViewModel(Instance._delayStroage[0]);
                 Instance._delayStroage.RemoveAt(0);

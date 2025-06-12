@@ -15,7 +15,7 @@ namespace Procedural_Map_Generation
 
         private void Awake()
         {
-            _model = ModelFactory.CreateModel<RoomModel, RoomViewModel>();
+            _model = ModelFactory.CreateModel<RoomModel, RoomViewModel>(this);
         }
 
         /// <summary>

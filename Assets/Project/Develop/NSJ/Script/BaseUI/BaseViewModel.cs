@@ -25,12 +25,7 @@ public class BaseViewModel<TModel> : BaseViewModel where TModel : BaseModel
         HasViewID.Bind(x => Model.HasViewID = HasViewID.Value);
         ViewID.Bind(x => Model.ViewID = ViewID.Value);
 
-
-        if(TestGameManager.Instance != null)
-        {
-            Model.SubscribeSaveEvent<TModel>();
-        }
-
+        // 뷰모델이 설정되었을 때 호출되는 메서드를 실행합니다.
         OnModelSet();
     }
 

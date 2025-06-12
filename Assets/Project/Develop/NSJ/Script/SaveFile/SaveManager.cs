@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class TestGameManager : SingleTon<TestGameManager>
+public class SaveManager : SingleTon<SaveManager>
 {
     public GameData Data;
 
@@ -12,6 +12,24 @@ public class TestGameManager : SingleTon<TestGameManager>
     public event UnityAction OnSaveBeforeEvent;
     public event UnityAction OnSaveEvent;
     public event UnityAction<List<string>> OnLoadEvent;
+
+    /// <summary>
+    /// 모델의 저장 이벤트를 등록합니다.
+    /// </summary>
+    public static void RegisterModel<TModel>(TModel model) where TModel : BaseModel
+    {
+        SetSingleton();
+        model.SubscribeSaveEvent<TModel>();
+    }
+
+    /// <summary>
+    /// 모델의 저장 이벤트를 등록 해제합니다.
+    /// </summary>
+    public static void UnRegisterModel<TModel>(TModel model) where TModel : BaseModel
+    {
+        model.UnsubscribeSaveEvent<TModel>();
+    }
+
     public bool SaveData(int saveNumber = int.MinValue)
     {
         OnSaveBeforeEvent?.Invoke();
@@ -24,7 +42,6 @@ public class TestGameManager : SingleTon<TestGameManager>
         DateTime now = DateTime.Now;
         Data.LastSaveTime = now.ToString("yyyy-MM-dd HH:mm:ss");
 
-
         bool success = SaveUtility.Save(ref Data, saveNumber);
 
         if (success)
@@ -33,7 +50,6 @@ public class TestGameManager : SingleTon<TestGameManager>
             OnSaveEvent?.Invoke();
         }
 
-        Debug.Log("세이브 성공");
         return success;
     }
 

@@ -8,9 +8,26 @@ public abstract class BaseModel
     public bool HasViewID;
     public int ViewID;
 
-    public virtual void SaveData<T>()
+    /// <summary>
+    /// 모델을 초기화하는 메서드입니다.
+    /// </summary>
+    public void InitModel()
     {
-        Debug.Log("Json세이브");
+        Init();
+    }
+
+    /// <summary>
+    /// 모델을 초기화하는 메서드입니다. 이 메서드는 모델이 설정될 때 호출됩니다.
+    /// </summary>
+    public virtual void Init() { }
+
+
+    /// <summary>
+    /// 모델의 데이터를 Json 형식으로 저장하는 메서드입니다.
+    /// </summary>
+    /// <typeparam name="T">Model 타입 </typeparam>
+    public virtual void SaveData<T>() where T : BaseModel
+    {
         string json = ToJson(this);
         SaveEntry entry = new SaveEntry
         {
@@ -19,26 +36,43 @@ public abstract class BaseModel
         };
         // SaveEntry 저장 로직
         string saveJson = ToJson(entry);
-        Debug.Log(saveJson);
         // 여기에 SaveEntry를 저장하는 로직을 추가합니다.
         // 현재는 테스트 게임매니저에 넣었지만 이후 SaveManager로 변경할 예정입니다.
-        TestGameManager.Instance.AddSaveModelData(saveJson);
+        SaveManager.Instance.AddSaveModelData(saveJson);
     }
-    public virtual void LoadData<T>(List<string> saveEntrys)
+    /// <summary>
+    /// 데이터를 로드하는 메서드입니다.
+    /// </summary>
+    /// <typeparam name="T">Model 타입 명</typeparam>
+    /// <param name="saveEntrys"></param>
+    public virtual void LoadData<T>() where T : BaseModel, ICopyable<T>
     {
+        T model = null; 
+
+        GameData data = SaveManager.Instance.Data;
+        List<string> saveEntrys = data.Models;
+
         // SaveEntry를 찾아서 로드하는 로직
         foreach (string entryJson in saveEntrys)
         {
             SaveEntry saveEntry = FromJson<SaveEntry>(entryJson);
-            Debug.Log(entryJson);
             // entryJson.SaveID가 현재 모델의 SaveID와 일치하는지 확인합니다.
             if (saveEntry.SaveID == $"{typeof(T)}/{ViewID}")
             {
-
                 // entryJson.Json을 사용하여 모델을 로드합니다.
-                T model = FromJson<T>(saveEntry.Json);
+                model = FromJson<T>(saveEntry.Json);
             }
         }
+        AllCopyFrom<T>(model);
+    }
+    /// <summary>
+    /// 모델의 모든 데이터를 복사하는 메서드입니다.
+    /// </summary>
+    private void AllCopyFrom<T>(T model) where T : BaseModel, ICopyable<T>
+    {
+        HasViewID = model.HasViewID;
+        ViewID = model.ViewID;
+        ((ICopyable<T>)this).CopyFrom(model);
     }
 
     private string ToJson<T>(T instance) where T : class
@@ -53,17 +87,12 @@ public abstract class BaseModel
         return model;
     }
 
-    public void SubscribeSaveEvent<TModel>()
-    {
-    
-        TestGameManager.Instance.OnSaveEvent += SaveData<TModel>;
-        TestGameManager.Instance.OnLoadEvent += LoadData<TModel>;
-
-        LoadData<TModel>(TestGameManager.Instance.Models);
+    public void SubscribeSaveEvent<TModel>() where TModel : BaseModel
+    { 
+        SaveManager.Instance.OnSaveBeforeEvent += SaveData<TModel>;
     }
-    public void UnsubscribeSaveEvent<TModel>()
+    public void UnsubscribeSaveEvent<TModel>() where TModel : BaseModel
     {
-        TestGameManager.Instance.OnSaveEvent -= SaveData<TModel>;
-        TestGameManager.Instance.OnLoadEvent -= LoadData<TModel>;
+        SaveManager.Instance.OnSaveBeforeEvent -= SaveData<TModel>;
     }
 }

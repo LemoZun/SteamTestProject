@@ -47,19 +47,19 @@ public class ScoreView : BaseView<ScoreViewModel>
     }
     private void SubscribesTempEvent()
     {
-        if (TestGameManager.Instance == null)
+        if (SaveManager.Instance == null)
             return;
     }
 
     private void UnsubcribesTempEvent()
     {
-        if (TestGameManager.Instance == null)
+        if (SaveManager.Instance == null)
             return;
     }
 
     private void SaveData()
     {
-        TestGameManager.Instance.SaveData();
+        SaveManager.Instance.SaveData();
         SceneManager.LoadScene("TitleScene");
     }
 

@@ -15,7 +15,12 @@ public enum RoomType
 }
 
 [System.Serializable]
-public class RoomModel : BaseModel
+public class RoomModel : BaseModel, ICopyable<RoomModel>
 {
     public RoomType Type;
+
+    public void CopyFrom(RoomModel model)
+    {
+        
+    }
 }

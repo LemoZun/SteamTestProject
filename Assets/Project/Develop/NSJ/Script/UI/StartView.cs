@@ -69,7 +69,7 @@ public class StartView : BaseView<StartVIewModel>
 
     private void ClickSave(int number)
     {
-        TestGameManager.Instance.LoadData(number);
+        SaveManager.Instance.LoadData(number);
         SceneManager.LoadScene("GameScene");
     }
 
@@ -77,9 +77,9 @@ public class StartView : BaseView<StartVIewModel>
     {
         for (int i = 0; i < _saves.Count; i++)
         {
-            if (TestGameManager.Instance.LoadData(i))
+            if (SaveManager.Instance.LoadData(i))
             {
-                _saves[i].Text.text = TestGameManager.Instance.Data.LastSaveTime;
+                _saves[i].Text.text = SaveManager.Instance.Data.LastSaveTime;
             }
         }
     }
