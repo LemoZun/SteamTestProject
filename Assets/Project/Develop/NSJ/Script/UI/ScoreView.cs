@@ -13,11 +13,6 @@ public class ScoreView : BaseView<ScoreViewModel>
     private Button _scoreDown;
 
     public event UnityAction<int> OnScoreButtonClick;
-    void Start()
-    {
-        Init();
-        SubscribesEvnet();
-    }
 
     void OnEnable()
     {
@@ -37,14 +32,14 @@ public class ScoreView : BaseView<ScoreViewModel>
         Model?.Score.UnBind(UpdateText);
     }
 
-    private void Init()
+    protected override void InitAwake()
     {
         _score = GetUI<TMP_Text>("ScoreText");
         _save = GetUI<Button>("SaveButton");
         _scoreUp = GetUI<Button>("ScoreUpButton");
         _scoreDown = GetUI<Button>("ScoreDownButton");
     }
-    private void SubscribesEvnet()
+    protected override void SubscribeEvents()
     {
         _save.onClick.AddListener(() => SaveData());
         _scoreUp.onClick.AddListener(() => Model.AddScore(1));
@@ -76,7 +71,7 @@ public class ScoreView : BaseView<ScoreViewModel>
 
 public class ScoreViewModel : BaseViewModel<ScoreModel>
 {
-    public Bindable<int> Score = new Bindable<int>(0);
+    public Bindable<int> Score;
 
     public void AddScore(int value)
     {
@@ -85,7 +80,7 @@ public class ScoreViewModel : BaseViewModel<ScoreModel>
 
     protected override void OnModelSet()
     {
-        Score.Value = Model.Score;
+        Score = new Bindable<int>(Model.Score);
 
         Model.OnScoreChange += (score) => Score.Value = score;
     }

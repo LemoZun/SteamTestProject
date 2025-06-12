@@ -79,7 +79,7 @@ namespace Procedural_Map_Generation
 
             // 시작 지점
             _startRoom = _rooms[0];
-            _startRoom.Type = Room.RoomType.Start;
+            _startRoom.Type = RoomType.Start;
 
             // 방 간 거리 계산(DPS) 사용
             Dictionary<Room, int> distances = MapGenerationUtility.CalculateDistanceFrom(_startRoom);

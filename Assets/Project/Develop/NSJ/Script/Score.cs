@@ -7,22 +7,19 @@ public class Score : MonoBehaviour
 {
     [SerializeField] ScoreModel _model;
 
+
     private void Awake()
     {
-     
+        _model = ModelFactory.CreateModel<ScoreModel, ScoreViewModel>();
     }
     private void Start()
     {
-        _model = ModelFactory.CreateModel<ScoreModel, ScoreViewModel>();
-
-        _model.ChangeScore(TestGameManager.Instance.Score);
-
         _model.OnScoreChange += UpdateScore;
     }
 
     private void UpdateScore(int value)
     {
-        TestGameManager.Instance.SetScore(value);
+        _model.Score = value;
     }
 }
 

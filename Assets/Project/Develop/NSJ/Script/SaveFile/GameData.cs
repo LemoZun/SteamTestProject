@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine.Events;
 
 [System.Serializable]
@@ -8,5 +9,5 @@ public class GameData
     public string LastSaveTime;
     public double TotalPlayTime;
 
-    public int Score;
+    public List<string> Models = new List<string>();
 }

@@ -152,8 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &67220751
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -251,8 +252,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &96313429
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -350,8 +352,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 1
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &133059862
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -465,8 +468,8 @@ MonoBehaviour:
   - {fileID: 2055994801}
   - {fileID: 202435057}
   - {fileID: 306357871}
-  _roomCount: 6
-  _maxAddtionalEdgeCount: 0
+  _roomCount: 12
+  _maxAddtionalEdgeCount: 2
 --- !u!4 &149777814
 Transform:
   m_ObjectHideFlags: 0
@@ -512,8 +515,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &202435058
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -611,8 +615,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &226527879
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -710,8 +715,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &238236407
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -809,8 +815,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &306357872
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -908,8 +915,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &392490673
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1007,8 +1015,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &545173395
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1106,8 +1115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &891037663
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1205,8 +1215,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &896585659
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1304,8 +1315,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &1024274412
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1487,8 +1499,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &1657503706
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1586,8 +1599,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &1790331549
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1685,8 +1699,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &1839612281
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1784,8 +1799,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95fa675ba7aaf64b9c6ad3f979c0752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   ConnectedRooms: []
+  _model:
+    Type: 0
 --- !u!212 &2055994802
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -34,6 +34,9 @@ namespace NSJTool
                 _instance = value;
             }
         }
+        /// <summary>
+        /// 풀 정보 클래스입니다. 각 프리팹에 대한 풀 정보를 저장합니다.
+        /// </summary>
         public class PoolInfo
         {
             public Stack<GameObject> Pool;
@@ -45,7 +48,7 @@ namespace NSJTool
         }
 
         /// <summary>
-        /// 프리팹용
+        /// 풀 정보를 저장하는 딕셔너리입니다. 키는 프리팹의 인스턴스 ID입니다.
         /// </summary>
         private Dictionary<int, PoolInfo> _poolDic = new Dictionary<int, PoolInfo>();
 
@@ -64,44 +67,68 @@ namespace NSJTool
         }
 
         #region GetPool
+        /// <summary>
+        /// 풀에서 오브젝트를 가져옵니다.
+        /// </summary>
         public static GameObject Get(GameObject prefab)
         {
             GameObject instance = ProcessGet(prefab);
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 지정된 Transform에 위치시킵니다.
+        /// </summary>
         public static GameObject Get(GameObject prefab, Transform transform)
         {
             GameObject instance = ProcessGet(prefab, transform);
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 지정된 Transform에 위치시키며, 월드 포지션을 유지할지 여부를 설정합니다.
+        /// </summary>
         public static GameObject Get(GameObject prefab, Transform transform, bool worldPositionStay)
         {
             GameObject instance = ProcessGet(prefab, transform, worldPositionStay);
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 지정된 위치와 회전을 설정합니다.
+        /// </summary>
         public static GameObject Get(GameObject prefab, Vector3 pos, Quaternion rot)
         {
             GameObject instance = ProcessGet(prefab, pos, rot);
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 지정된 프리팹을 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static GameObject Get(GameObject prefab, float returnDelay)
         {
             GameObject instance = ProcessGet(prefab);
             Return(instance, returnDelay);
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 지정된 Transform에 위치시키며, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static GameObject Get(GameObject prefab, Transform transform, float returnDelay)
         {
             GameObject instance = ProcessGet(prefab, transform);
             Return(instance, returnDelay);
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 지정된 Transform에 위치시키며, 월드 포지션을 유지할지 여부를 설정하고, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static GameObject Get(GameObject prefab, Transform transform, bool worldPositionStay, float returnDelay)
         {
             GameObject instance = ProcessGet(prefab, transform, worldPositionStay);
             Return(instance, returnDelay);
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 지정된 위치와 회전을 설정하며, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static GameObject Get(GameObject prefab, Vector3 pos, Quaternion rot, float returnDelay)
         {
             GameObject instance = ProcessGet(prefab, pos, rot);
@@ -109,6 +136,9 @@ namespace NSJTool
             Return(instance, returnDelay);
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 해당 컴포넌트를 반환합니다.
+        /// </summary>
         public static T Get<T>(T prefab) where T : Component
         {
             GameObject instance = ProcessGet(prefab.gameObject);
@@ -116,6 +146,9 @@ namespace NSJTool
             return component;
         }
 
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 해당 컴포넌트를 지정된 Transform에 위치시킵니다.
+        /// </summary>
         public static T Get<T>(T prefab, Transform transform) where T : Component
         {
             GameObject instance = ProcessGet(prefab.gameObject, transform);
@@ -123,6 +156,9 @@ namespace NSJTool
             return component;
         }
 
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 해당 컴포넌트를 지정된 Transform에 위치시키며, 월드 포지션을 유지할지 여부를 설정합니다.
+        /// </summary>
         public static T Get<T>(T prefab, Transform transform, bool worldPositionStay) where T : Component
         {
             GameObject instance = ProcessGet(prefab.gameObject, transform, worldPositionStay);
@@ -130,6 +166,9 @@ namespace NSJTool
             return component;
         }
 
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 해당 컴포넌트를 지정된 위치와 회전을 설정합니다.
+        /// </summary>
         public static T Get<T>(T prefab, Vector3 pos, Quaternion rot) where T : Component
         {
             GameObject instance = ProcessGet(prefab.gameObject, pos, rot);
@@ -137,6 +176,9 @@ namespace NSJTool
             return component;
         }
 
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 해당 컴포넌트를 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static T Get<T>(T prefab, float returnDelay) where T : Component
         {
             GameObject instance = ProcessGet(prefab.gameObject);
@@ -144,6 +186,9 @@ namespace NSJTool
             Return(component, returnDelay);
             return component;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 해당 컴포넌트를 지정된 Transform에 위치시키며, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static T Get<T>(T prefab, Transform transform, float returnDelay) where T : Component
         {
             GameObject instance = ProcessGet(prefab.gameObject, transform);
@@ -151,6 +196,9 @@ namespace NSJTool
             Return(component, returnDelay);
             return component;
         }
+        /// <summary>
+        ///  풀에서 오브젝트를 가져오고, 해당 컴포넌트를 지정된 Transform에 위치시키며, 월드 포지션을 유지할지 여부를 설정하고, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static T Get<T>(T prefab, Transform transform, bool worldPositionStay, float returnDelay) where T : Component
         {
             GameObject instance = ProcessGet(prefab.gameObject, transform, worldPositionStay);
@@ -158,6 +206,9 @@ namespace NSJTool
             Return(component, returnDelay);
             return component;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 해당 컴포넌트를 지정된 위치와 회전을 설정하며, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static T Get<T>(T prefab, Vector3 pos, Quaternion rot, float returnDelay) where T : Component
         {
             GameObject instance = ProcessGet(prefab.gameObject, pos, rot);
@@ -167,14 +218,23 @@ namespace NSJTool
         }
         #endregion
         #region ReturnPool
+        /// <summary>
+        /// 풀에서 오브젝트를 반환합니다. 반환된 오브젝트는 비활성화되고, 풀에 다시 추가됩니다.
+        /// </summary>
         public static void Return(GameObject instance)
         {
             ProcessReturn(instance.gameObject);
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 반환합니다. 반환된 오브젝트는 비활성화되고, 풀에 다시 추가됩니다.
+        /// </summary>
         public static void Return<T>(T instance) where T : Component
         {
             ProcessReturn(instance.gameObject);
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 반환합니다. 반환된 오브젝트는 비활성화되고, 지정된 지연 시간 후에 풀에 다시 추가됩니다.
+        /// </summary>
         public static void Return(GameObject instance, float delay)
         {
             if (instance == null)
@@ -183,6 +243,9 @@ namespace NSJTool
                 return;
             Instance.StartCoroutine(Instance.ReturnRoutine(instance, delay));
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 반환합니다. 반환된 오브젝트는 비활성화되고, 지정된 지연 시간 후에 풀에 다시 추가됩니다.
+        /// </summary>
         public static void Return<T>(T instance, float delay) where T : Component
         {
             if (instance == null)
@@ -192,6 +255,9 @@ namespace NSJTool
                 return;
             Instance.StartCoroutine(Instance.ReturnRoutine(instance.gameObject, delay));
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 반환하는 코루틴입니다. 지정된 지연 시간 후에 오브젝트를 풀에 다시 추가합니다.
+        /// </summary>
         IEnumerator ReturnRoutine(GameObject instance, float delay)
         {
             yield return GetDelay(delay);
@@ -205,6 +271,9 @@ namespace NSJTool
         }
         #endregion
         #region GetAutoPool
+        /// <summary>
+        /// 자동 풀링을 위한 코루틴을 시작합니다. 지정된 프리팹을 주기적으로 가져오고, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static void Get(GameObject prefab, float intervalTime, float returnDelay, ref Coroutine coroutine)
         {
             if (coroutine == null)
@@ -212,6 +281,9 @@ namespace NSJTool
                 coroutine = Instance.StartCoroutine(Instance.GetAutoPoolRoutine(prefab, intervalTime, returnDelay));
             }
         }
+        /// <summary>
+        /// 자동 풀링을 위한 코루틴을 시작합니다. 지정된 프리팹을 주기적으로 가져오고, Transform에 위치시키며, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static void Get(GameObject prefab, Transform transform, float intervalTime, float returnDelay, ref Coroutine coroutine)
         {
             if (coroutine == null)
@@ -219,6 +291,9 @@ namespace NSJTool
                 coroutine = Instance.StartCoroutine(Instance.GetAutoPoolRoutine(prefab, transform, false, intervalTime, returnDelay));
             }
         }
+        /// <summary>
+        /// 자동 풀링을 위한 코루틴을 시작합니다. 지정된 프리팹을 주기적으로 가져오고, Transform에 위치시키며, 월드 포지션을 유지할지 여부를 설정하고, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static void Get(GameObject prefab, Transform transform, bool worldPositionStay, float intervalTime, float returnDelay, ref Coroutine coroutine)
         {
             if (coroutine == null)
@@ -226,6 +301,9 @@ namespace NSJTool
                 coroutine = Instance.StartCoroutine(Instance.GetAutoPoolRoutine(prefab, transform, worldPositionStay, intervalTime, returnDelay));
             }
         }
+        /// <summary>
+        /// 자동 풀링을 위한 코루틴을 시작합니다. 지정된 프리팹을 주기적으로 가져오고, 위치와 회전을 설정하며, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         public static void Get(GameObject prefab, Vector3 pos, Quaternion rot, float intervalTime, float returnDelay, ref Coroutine coroutine)
         {
             if (coroutine == null)
@@ -233,16 +311,25 @@ namespace NSJTool
                 coroutine = Instance.StartCoroutine(Instance.GetAutoPoolRoutine(prefab, pos, rot, intervalTime, returnDelay));
             }
         }
+        /// <summary>
+        /// 자동 풀링을 위한 코루틴을 시작합니다. 지정된 프리팹을 주기적으로 가져오고, 반환 지연 시간 후에 반환합니다. 지정된 지속 시간 후에 자동 풀링을 중지합니다.
+        /// </summary>
         public static void Get(GameObject prefab, float intervalTime, float returnDelay, float duration)
         {
             Coroutine coroutine = Instance.StartCoroutine(Instance.GetAutoPoolRoutine(prefab, intervalTime, returnDelay));
             Instance.StartCoroutine(Instance.GetAutoPoolDurationRoutine(coroutine, duration));
         }
+        /// <summary>
+        /// 자동 풀링을 위한 코루틴을 시작합니다. 지정된 프리팹을 주기적으로 가져오고, Transform에 위치시키며, 반환 지연 시간 후에 반환합니다. 지정된 지속 시간 후에 자동 풀링을 중지합니다.
+        /// </summary>
         public static void Get(GameObject prefab, Vector3 pos, Quaternion rot, float intervalTime, float returnDelay, float duration)
         {
             Coroutine coroutine = Instance.StartCoroutine(Instance.GetAutoPoolRoutine(prefab, pos, rot, intervalTime, returnDelay));
             Instance.StartCoroutine(Instance.GetAutoPoolDurationRoutine(coroutine, duration));
         }
+        /// <summary>
+        /// 자동 풀링을 위한 코루틴을 시작합니다. 지정된 프리팹을 주기적으로 가져오고, Transform에 위치시키며, 월드 포지션을 유지할지 여부를 설정하고, 반환 지연 시간 후에 반환합니다. 지정된 지속 시간 후에 자동 풀링을 중지합니다.
+        /// </summary>
         public static void Return(ref Coroutine coroutine)
         {
             if (coroutine != null)
@@ -251,6 +338,9 @@ namespace NSJTool
                 coroutine = null;
             }
         }
+        /// <summary>
+        /// 자동 풀링을 위한 코루틴입니다. 지정된 프리팹을 주기적으로 가져오고, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         IEnumerator GetAutoPoolRoutine(GameObject prefab, float intervalTime, float returnDelay)
         {
             while (true)
@@ -259,6 +349,9 @@ namespace NSJTool
                 yield return GetDelay(intervalTime);
             }
         }
+        /// <summary>
+        /// 자동 풀링을 위한 코루틴입니다. 지정된 프리팹을 주기적으로 가져오고, Transform에 위치시키며, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         IEnumerator GetAutoPoolRoutine(GameObject prefab, Transform transform, bool worldPositionStay, float intervalTime, float returnDelay)
         {
             while (true)
@@ -267,6 +360,9 @@ namespace NSJTool
                 yield return GetDelay(intervalTime);
             }
         }
+        /// <summary>
+        /// 자동 풀링을 위한 코루틴입니다. 지정된 프리팹을 주기적으로 가져오고, 위치와 회전을 설정하며, 반환 지연 시간 후에 반환합니다.
+        /// </summary>
         IEnumerator GetAutoPoolRoutine(GameObject prefab, Vector3 pos, Quaternion rot, float intervalTime, float returnDelay)
         {
             while (true)
@@ -275,17 +371,20 @@ namespace NSJTool
                 yield return GetDelay(intervalTime);
             }
         }
+        /// <summary>
+        /// 자동 풀링을 위한 코루틴입니다. 지정된 프리팹을 주기적으로 가져오고, 반환 지연 시간 후에 반환합니다. 지정된 지속 시간 후에 자동 풀링을 중지합니다.
+        /// </summary>
         IEnumerator GetAutoPoolDurationRoutine(Coroutine coroutine, float duration)
         {
             yield return GetDelay(duration);
             Return(ref coroutine);
         }
         #endregion
-
+        /// <summary>
+        /// 풀 오브젝트를 찾습니다. 해당 프리팹에 대한 풀 정보가 없으면 새로 생성합니다.
+        /// </summary>
         private static PoolInfo FindPool(GameObject poolPrefab)
         {
-            //CreateObjectPool();
-
             int prefabID = poolPrefab.GetInstanceID();
 
             PoolInfo pool = default;
@@ -311,7 +410,6 @@ namespace NSJTool
         /// <summary>
         /// 풀 정보 생성
         /// </summary>
-
         private static PoolInfo GetPoolInfo(Stack<GameObject> pool, GameObject prefab, Transform parent)
         {
             PoolInfo info = new PoolInfo();
@@ -330,6 +428,9 @@ namespace NSJTool
             poolObject.SubscribePoolDeactivateEvent();
         }
 
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오는 메서드입니다. 해당 프리팹에 대한 풀 정보를 찾고, 활성화된 오브젝트가 있으면 반환하고, 없으면 새로 생성합니다.
+        /// </summary>
         private static GameObject ProcessGet(GameObject prefab)
         {
             GameObject instance = null;
@@ -349,10 +450,14 @@ namespace NSJTool
             }
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 지정된 Transform에 위치시킵니다. 해당 프리팹에 대한 풀 정보를 찾고, 활성화된 오브젝트가 있으면 반환하고, 없으면 새로 생성합니다.
+        /// </summary>
         private static GameObject ProcessGet(GameObject prefab, Transform transform)
         {
             GameObject instance = null;
             PoolInfo info = FindPool(prefab);
+            
             if (FindObject(info))
             {
                 instance = info.Pool.Pop();
@@ -369,6 +474,9 @@ namespace NSJTool
 
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 지정된 Transform에 위치시키며, 월드 포지션을 유지할지 여부를 설정합니다. 해당 프리팹에 대한 풀 정보를 찾고, 활성화된 오브젝트가 있으면 반환하고, 없으면 새로 생성합니다.
+        /// </summary>
         private static GameObject ProcessGet(GameObject prefab, Transform transform, bool worldPositionStay)
         {
             GameObject instance = null;
@@ -397,6 +505,9 @@ namespace NSJTool
 
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 지정된 위치와 회전을 설정합니다. 해당 프리팹에 대한 풀 정보를 찾고, 활성화된 오브젝트가 있으면 반환하고, 없으면 새로 생성합니다.
+        /// </summary>
         private static GameObject ProcessGet(GameObject prefab, Vector3 pos, Quaternion rot)
         {
             GameObject instance = null;
@@ -416,6 +527,9 @@ namespace NSJTool
             }
             return instance;
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오고, 해당 컴포넌트를 반환합니다. 해당 프리팹에 대한 풀 정보를 찾고, 활성화된 오브젝트가 있으면 반환하고, 없으면 새로 생성합니다.
+        /// </summary>
         private static void ProcessReturn(GameObject instance)
         {
             //CreateObjectPool();
@@ -438,6 +552,9 @@ namespace NSJTool
             instance.gameObject.SetActive(false);
             info.Pool.Push(instance.gameObject);
         }
+        /// <summary>
+        /// 풀에서 오브젝트를 가져오는 메서드입니다. 해당 프리팹에 대한 풀 정보를 찾고, 활성화된 오브젝트가 있으면 반환하고, 없으면 새로 생성합니다.
+        /// </summary>
         private static bool FindObject(PoolInfo info)
         {
             GameObject instance = null;
@@ -504,7 +621,9 @@ namespace NSJTool
             info.IsActive = false;
         }
 
-
+        /// <summary>
+        /// 지정된 시간만큼 대기하는 WaitForSeconds 객체를 반환합니다. 이미 생성된 객체가 있으면 재사용합니다.
+        /// </summary>
         private WaitForSeconds GetDelay(float time)
         {
             if (_delayDic.ContainsKey(time) == false)

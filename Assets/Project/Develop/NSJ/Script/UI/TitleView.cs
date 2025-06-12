@@ -4,26 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TitleView : BaseView<TitleBoxModel>
+public class TitleView : BaseView<TitleViewModel>
 {
     private Button _start;
     private Button _option;
     private Button _exit;
 
 
-    void Start()
-    {
-        Init();
-        SubscribesEvent();
-    }
-
-    private void Init()
+    protected override void InitAwake()
     {
         _start = GetUI<Button>("StartButton");
         _option = GetUI<Button>("OptionButton");
         _exit = GetUI<Button>("ExitButton");
     }
-    private void SubscribesEvent()
+    protected override void SubscribeEvents()
     {
         _start.onClick.AddListener(() => Panel.ChangeView(TitlePanel.View.Start));
         _exit.onClick.AddListener(ExitGame);
@@ -38,7 +32,7 @@ public class TitleView : BaseView<TitleBoxModel>
     }
 }
 
-public class TitleBoxModel 
+public class TitleViewModel : BaseViewModel
 {
     
 }

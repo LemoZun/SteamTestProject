@@ -1,24 +1,27 @@
 using System;
-using UnityEngine.Events;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TestGameManager : SingleTon<TestGameManager>
 {
     public GameData Data;
 
-    public int Score => Data.Score;
+    public List<string> Models => Data.Models;
 
+    public event UnityAction OnSaveBeforeEvent;
     public event UnityAction OnSaveEvent;
-
-
+    public event UnityAction<List<string>> OnLoadEvent;
     public bool SaveData(int saveNumber = int.MinValue)
     {
+        OnSaveBeforeEvent?.Invoke();
+
         if (saveNumber == int.MinValue)
         {
             saveNumber = Data.SaveNumber;
         }
 
-        DateTime now  = DateTime.Now;
+        DateTime now = DateTime.Now;
         Data.LastSaveTime = now.ToString("yyyy-MM-dd HH:mm:ss");
 
 
@@ -30,7 +33,7 @@ public class TestGameManager : SingleTon<TestGameManager>
             OnSaveEvent?.Invoke();
         }
 
-
+        Debug.Log("세이브 성공");
         return success;
     }
 
@@ -38,7 +41,7 @@ public class TestGameManager : SingleTon<TestGameManager>
     {
         Data = SaveUtility.Load(saveNumber, out bool success);
 
-        if(success == false)
+        if (success == false)
         {
             if (Data == null)
             {
@@ -46,12 +49,16 @@ public class TestGameManager : SingleTon<TestGameManager>
                 Data.SaveNumber = saveNumber;
             }
         }
-        
+        OnLoadEvent?.Invoke(Data.Models);
+
         return success;
     }
 
-    public void SetScore(int value)
+    /// <summary>
+    /// 모델 데이터를 추가합니다.
+    /// </summary>
+    public void AddSaveModelData(string saveJson)
     {
-        Data.Score = value;
+        Data.Models.Add(saveJson);
     }
 }

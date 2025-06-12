@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-public class ViewResistry<TViewModel>
+using UnityEngine;
+public class ViewResistry<TViewModel> where TViewModel : BaseViewModel
 {
     private static ViewResistry<TViewModel> _instance;
     public static ViewResistry<TViewModel> Instance
@@ -24,24 +25,64 @@ public class ViewResistry<TViewModel>
     private List<IView<TViewModel>> _views;
 
     /// <summary>
+    /// 뷰모델을 지연 저장하기 위한 큐입니다. 뷰가 없을 때 뷰모델을 저장합니다.
+    /// </summary>
+    private List<TViewModel> _delayStroage;
+
+    /// <summary>
     /// 뷰모델과 뷰를 바인딩하는 레지스트리입니다.
     /// </summary>
     /// <param name="view"></param>
     public static void Resister(IView<TViewModel> view)
     {
-        if(Instance._bindings == null)
+
+        if (Instance._bindings == null)
         {
             Instance._bindings = new Dictionary<TViewModel, IView<TViewModel>>();
         }
 
-        if(Instance._views == null)
+        if (Instance._views == null)
         {
             Instance._views = new List<IView<TViewModel>>();
         }
 
-
+        // 뷰모델과 뷰의 바인딩을 확인합니다.
         if (Instance._views.Contains(view) == false)
             Instance._views.Add(view);
+
+        // 뷰모델이 지연 저장 큐에 있는지 확인합니다.
+        if (Instance._delayStroage != null)
+        {
+            // 뷰모델이 이미 바인딩되어 있는지 확인합니다.
+            if (Instance._delayStroage.Count <= 0)
+                return; // 지연 저장 큐가 비어있으면 아무 작업도 하지 않습니다.
+
+            // 뷰모델이 ViewID를 가지고 있는지 확인합니다.
+            if (view.HasViewID == true)
+            {
+                Debug.Log("뷰모델 true");
+                // ViewID값이 존재하는 경우 해당 뷰모델을 꺼내서 뷰에 설정합니다.
+                for (int i = 0; i < Instance._delayStroage.Count; i++)
+                {
+                    // 뷰모델의 ViewID와 현재 뷰의 ViewID가 일치하는지 확인합니다.
+                    if (Instance._delayStroage[i].ViewID.Value == view.ViewID)
+                    {
+                        // 뷰모델이 일치하는 경우, 해당 뷰모델을 뷰에 설정하고 지연 저장 리스트에서 제거합니다.
+                        view.SetViewModel(Instance._delayStroage[i]);
+                        Instance._delayStroage.RemoveAt(i);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log("뷰모델 false");
+                // VIewID값이 Default인 경우, 지연 저장 리스트에서 첫번째 뷰모델을 꺼내서 뷰에 설정합니다.
+                view.SetViewModel(Instance._delayStroage[0]);
+                Instance._delayStroage.RemoveAt(0);
+            }
+
+        }
     }
 
     /// <summary>
@@ -67,12 +108,31 @@ public class ViewResistry<TViewModel>
     /// <returns></returns>
     public static bool TryBind(TViewModel viewModel)
     {
+        if (Instance._bindings == null)
+        {
+            if (Instance._delayStroage == null)
+                Instance._delayStroage = new List<TViewModel>();
+            // 뷰가 아직 없을 때 뷰모델을 지연 저장합니다.
+            Instance._delayStroage.Add(viewModel);
+            return false;
+        }
+
+
         if (Instance._bindings.ContainsKey(viewModel))
             return true;// 이미 바인딩된 뷰모델이므로 true 반환
 
-
+        IView<TViewModel> targetView = null;
         // 뷰모델에 바인딩된 뷰를 찾습니다.
-        var targetView = Instance._views.FirstOrDefault(v => !v.HasViewModel);
+        if (viewModel.HasViewID.Value == false)
+        {
+            // 뷰모델이 ViewID를 가지고 있지 않은 경우, 바인딩되지 않은 뷰를 찾습니다.
+            targetView = Instance._views.FirstOrDefault(v => v.HasViewModel == false);
+        }
+        else
+        {  
+            // 뷰모델이 ViewID를 가지고 있는 경우, 해당 ViewID를 가진 뷰를 찾습니다.
+            targetView = Instance._views.FirstOrDefault(v => v.HasViewModel == false && v.HasViewID && v.ViewID == viewModel.ViewID.Value);
+        }
         if (targetView == null) return false;
 
         // 뷰모델이 바인딩된 뷰를 찾았으므로, 해당 뷰에 뷰모델을 설정합니다.
@@ -91,6 +151,9 @@ public class ViewResistry<TViewModel>
     /// <returns></returns>
     public static bool TryRebind(TViewModel viewModel)
     {
+        if (Instance._bindings == null)
+            return false;
+
         if (!Instance._bindings.TryGetValue(viewModel, out var view))
             return false;
 

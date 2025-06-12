@@ -6,25 +6,17 @@ namespace Procedural_Map_Generation
 {
     public class Room : MonoBehaviour
     {
-        public enum RoomType
-        {
-            UnSet,
-            Normal,
-            Start,
-            Boss,
-            Shop,
-            Special,
-            Secret,
-            End,
-        }
-
-        public RoomType Type;
-
+        public RoomType Type { get { return _model.Type; } set { _model.Type = value; } }
 
         public List<Room> ConnectedRooms;
         public Vertex Vertex;
 
+        [SerializeField]private RoomModel _model;
 
+        private void Awake()
+        {
+            _model = ModelFactory.CreateModel<RoomModel, RoomViewModel>();
+        }
 
         /// <summary>
         /// 방의 중심점을 설정합니다. (Vertex를 생성하거나 업데이트)

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StartView : BaseView<StartBoxModel>
+public class StartView : BaseView<StartVIewModel>
 {
     public struct SaveSlot
     {
@@ -19,24 +19,19 @@ public class StartView : BaseView<StartBoxModel>
 
     private List<SaveSlot> _saves = new List<SaveSlot>();
 
-    void Start()
-    {
-        Init();
-        SubscribesEvent();
-    }
 
     private void OnEnable()
     {
         RefreshSaveSlot();
     }
 
-    private void Init()
+    protected override void InitAwake()
     {
         InitSaveButton();
         _exit = GetUI<Button>("ExitButton");
     }
 
-    private void SubscribesEvent()
+    protected override void SubscribeEvents()
     {
         _exit.onClick.AddListener(() => Panel.ChangeView(TitlePanel.View.Title));
         SubscribeSaveButton();
@@ -47,8 +42,6 @@ public class StartView : BaseView<StartBoxModel>
         BindSaveStruct("1SaveButton", "1SaveText");
         BindSaveStruct("2SaveButton", "2SaveText");
         BindSaveStruct("3SaveButton", "3SaveText");
-
-        RefreshSaveSlot();
     }
 
     private void BindSaveStruct(string buttonName, string textName)
@@ -92,7 +85,7 @@ public class StartView : BaseView<StartBoxModel>
     }
 }
 
-public class StartBoxModel
+public class StartVIewModel : BaseViewModel
 {
 
 }
