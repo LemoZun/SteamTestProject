@@ -47,7 +47,8 @@ public class ScoreView : BaseView<ScoreViewModel>
 
     private void UpdateText(int value)
     {
-        _score.text = $"{value}";
+        _score.
+            text = $"{value}";
     }
 }
 
@@ -57,6 +58,7 @@ public class ScoreViewModel : BaseViewModel<ScoreModel>
 
     public void AddScore(int value)
     {
+        Debug.Log("ºä¸ðµ¨");
         Model.ChangeScore(value);
     }
 
@@ -64,6 +66,6 @@ public class ScoreViewModel : BaseViewModel<ScoreModel>
     {
         Score = new Bindable<int>(Model.Score);
 
-       // Model.OnScoreChange += (score) => Score.Value = score;
+        Model.OnScoreChange += (score) => Score.Value = score;
     }
 }

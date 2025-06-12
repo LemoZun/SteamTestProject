@@ -20,6 +20,8 @@ namespace NSJ_MVVM
         [SerializeField]private bool _isLoaded;
         [SerializeField]private bool _hasViewID;
         [SerializeField]private int _viewID;
+
+        public event Action OnLoadEvent;
         /// <summary>
         /// 모델을 초기화하는 메서드입니다.
         /// </summary>
@@ -75,14 +77,16 @@ namespace NSJ_MVVM
                     model = FromJson<T>(saveEntry.Json);
                 }
             }
+            // 모델의 속성에 복사합니다.
             AllCopyFrom(model);
+            OnLoadEvent?.Invoke();
         }
         /// <summary>
         /// 모델의 모든 데이터를 복사하는 메서드입니다.
         /// </summary>
         private void AllCopyFrom<T>(T model) where T : BaseModel, ICopyable<T>
         {
-            if(model == null)
+            if (model == null)
             {
                 // 저장 데이터가 없는 경우 로드되지 않음 표시
                 IsLoaded = false;
@@ -92,8 +96,8 @@ namespace NSJ_MVVM
                 IsLoaded = true;
                 HasViewID = model.HasViewID;
                 ViewID = model.ViewID;
+                ((ICopyable<T>)this).CopyFrom(model);
             }
-            ((ICopyable<T>)this).CopyFrom(model);
         }
 
         private string ToJson<T>(T instance) where T : class

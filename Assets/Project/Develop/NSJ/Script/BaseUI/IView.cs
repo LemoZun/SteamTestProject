@@ -8,5 +8,6 @@ namespace NSJ_MVVM
         bool HasViewModel { get; set; }
 
         void SetViewModel(T viewModel);
+        void RemoveViewModel();
     }
 }

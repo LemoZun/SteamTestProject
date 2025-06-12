@@ -43,7 +43,6 @@ namespace NSJ_SaveUtility
                 saveNumber = Data.SaveNumber;
             }
 
-            Debug.Log(Data.Models.Count);
             DateTime now = DateTime.Now;
             Data.LastSaveTime = now.ToString("yyyy-MM-dd HH:mm:ss");
 

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace NSJ_MVVM
 {
@@ -13,6 +15,7 @@ namespace NSJ_MVVM
                 if (_instance == null)
                 {
                     _instance = new ViewResistry<TViewModel>();
+                    SceneManager.sceneUnloaded += ClearUnUsed;
                 }
                 return _instance;
             }
@@ -20,7 +23,7 @@ namespace NSJ_MVVM
         /// <summary>
         /// 뷰모델과 뷰를 바인딩하는 딕셔너리입니다.
         /// </summary>
-        private Dictionary<TViewModel, IView<TViewModel>> _bindings;
+        private Dictionary<IView<TViewModel>, TViewModel> _bindings;
         /// <summary>
         /// 뷰모델과 바인딩할 수 있는 뷰의 목록입니다.
         /// </summary>
@@ -40,7 +43,7 @@ namespace NSJ_MVVM
 
             if (Instance._bindings == null)
             {
-                Instance._bindings = new Dictionary<TViewModel, IView<TViewModel>>();
+                Instance._bindings = new Dictionary<IView<TViewModel>, TViewModel>();
             }
 
             if (Instance._views == null)
@@ -65,12 +68,16 @@ namespace NSJ_MVVM
                     // ViewID값이 존재하는 경우 해당 뷰모델을 꺼내서 뷰에 설정합니다.
                     for (int i = 0; i < Instance._delayStroage.Count; i++)
                     {
+                        TViewModel viewModel = Instance._delayStroage[i];
                         // 뷰모델의 ViewID와 현재 뷰의 ViewID가 일치하는지 확인합니다.
-                        if (Instance._delayStroage[i].ViewID.Value == view.ViewID)
+                        // 뷰모델이 로드되지 않았거나, ViewID가 일치하는 경우에만 바인딩합니다.
+                        if (viewModel.ViewID.Value == view.ViewID || viewModel.IsLoaded.Value == false)
                         {
                             // 뷰모델이 일치하는 경우, 해당 뷰모델을 뷰에 설정하고 지연 저장 리스트에서 제거합니다.
+                            // 뷰모델이 로드되지 않은 경우에도 바인딩합니다.
                             view.SetViewModel(Instance._delayStroage[i]);
                             Instance._delayStroage.RemoveAt(i);
+                            viewModel.IsLoaded.Value = true; // 뷰모델이 로드되었음을 표시합니다.
                             return;
                         }
                     }
@@ -93,12 +100,8 @@ namespace NSJ_MVVM
         {
             Instance._views.Remove(view);
 
-            KeyValuePair<TViewModel, IView<TViewModel>> entry = Instance._bindings.FirstOrDefault(x => x.Value.Equals(view));
+            Instance._bindings[view] = null;
 
-            if (entry.Equals(default(KeyValuePair<TViewModel, IView<TViewModel>>)) == false)
-            {
-                Instance._bindings.Remove(entry.Key);
-            }
         }
 
         /// <summary>
@@ -117,16 +120,17 @@ namespace NSJ_MVVM
                 return false;
             }
 
-
-            if (Instance._bindings.ContainsKey(viewModel))
+            if (Instance._bindings.ContainsValue(viewModel))
                 return true;// 이미 바인딩된 뷰모델이므로 true 반환
 
             IView<TViewModel> targetView = null;
             // 뷰모델에 바인딩된 뷰를 찾습니다.
-            if (viewModel.HasViewID.Value == false)
+            // 뷰모델이 로드되지 않은경우도 찾습니다
+            if (viewModel.HasViewID.Value == false || viewModel.IsLoaded.Value == false)
             {
                 // 뷰모델이 ViewID를 가지고 있지 않은 경우, 바인딩되지 않은 뷰를 찾습니다.
                 targetView = Instance._views.FirstOrDefault(v => v.HasViewModel == false);
+                viewModel.IsLoaded.Value = true; // 뷰모델이 로드되었음을 표시합니다.
             }
             else
             {
@@ -137,7 +141,17 @@ namespace NSJ_MVVM
 
             // 뷰모델이 바인딩된 뷰를 찾았으므로, 해당 뷰에 뷰모델을 설정합니다.
             targetView.SetViewModel(viewModel);
-            Instance._bindings.Add(viewModel, targetView);
+            if (Instance._bindings.ContainsKey(targetView))
+            {
+                // 이미 바인딩된 뷰가 있는 경우, 해당 뷰에 뷰모델을 다시 설정합니다.
+                Instance._bindings[targetView] = viewModel;
+            }
+            else
+            {
+                // 뷰모델과 뷰의 바인딩을 추가합니다.
+                Instance._bindings.Add(targetView, viewModel);
+            }
+
             Instance._views.Remove(targetView);
 
             return true;
@@ -154,24 +168,27 @@ namespace NSJ_MVVM
             if (Instance._bindings == null)
                 return false;
 
-            if (!Instance._bindings.TryGetValue(viewModel, out var view))
+            KeyValuePair<IView<TViewModel>, TViewModel> targetEntry = Instance._bindings.FirstOrDefault(x => x.Value.Equals(viewModel));
+
+            if (targetEntry.Equals(default(KeyValuePair<IView<TViewModel>, TViewModel>)))
                 return false;
 
-            view.SetViewModel(viewModel);
+            targetEntry.Key.RemoveViewModel(); // 기존 뷰모델을 제거합니다.
+            targetEntry.Key.SetViewModel(viewModel);
+
+            Instance._bindings[targetEntry.Key] = viewModel;
+
             return true;
         }
 
         /// <summary>
         /// 바인딩되지 않은 뷰를 제거합니다. 바인딩된 뷰가 없고, 뷰가 있는 경우에만 호출됩니다.
         /// </summary>
-        public static void ClearUnUsed()
+        public static void ClearUnUsed(Scene scene)
         {
-            if (Instance._bindings.Count == 0 && Instance._views.Count > 0)
-            {
-                // 바인딩되지 않은 뷰를 제거합니다.
-                Instance._views = null;
-                Instance._bindings = null;
-            }
+            Instance._views = null;
+            Instance._bindings = null;
+            Instance._delayStroage = null;
         }
     }
 }

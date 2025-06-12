@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace NSJ_MVVM
@@ -44,8 +45,8 @@ namespace NSJ_MVVM
         protected override void Awake()
         {
             base.Awake();
-            ViewResistry<TViewModel>.Resister(this);
             InitAwake();
+            ViewResistry<TViewModel>.Resister(this);
         }
         protected virtual void Start()
         {
@@ -56,7 +57,6 @@ namespace NSJ_MVVM
         private void OnDestroy()
         {
             ViewResistry<TViewModel>.UnResister(this);
-            ViewResistry<TViewModel>.ClearUnUsed();
         }
 
         /// <summary>
@@ -69,9 +69,16 @@ namespace NSJ_MVVM
 
             Model = model;
             HasViewModel = true;
-            model.HasViewID.Value = HasViewID;
-            model.ViewID.Value = ViewID;
+            Model.HasViewID.Value = HasViewID;
+            Model.ViewID.Value = ViewID;
+    
+            Model.OnRebindEvent += TryRebind;
             OnViewModelSet();
+        }
+
+        private void TryRebind()
+        {
+            ViewResistry<TViewModel>.TryRebind(Model);
         }
 
         /// <summary>
@@ -81,6 +88,7 @@ namespace NSJ_MVVM
         {
             if (HasViewModel == false) return;
 
+            Model.OnRebindEvent -= TryRebind;
             OnViewModelRemoved();
             Model = default;
             HasViewModel = false;

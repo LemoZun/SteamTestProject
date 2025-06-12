@@ -30,6 +30,7 @@ public class ScoreModel : BaseModel, ICopyable<ScoreModel>
 
     public void ChangeScore(int value)
     {
+        Debug.Log("¸ðµ¨");
         Score += value;
     }
 
