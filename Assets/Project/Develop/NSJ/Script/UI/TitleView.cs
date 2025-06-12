@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using NSJ_MVVM;
 using UnityEngine.UI;
 
 public class TitleView : BaseView<TitleViewModel>
@@ -34,5 +31,5 @@ public class TitleView : BaseView<TitleViewModel>
 
 public class TitleViewModel : BaseViewModel
 {
-    
+
 }

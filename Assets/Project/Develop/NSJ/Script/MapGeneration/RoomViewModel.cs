@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using NSJ_MVVM;
 
 public class RoomViewModel : BaseViewModel<RoomModel>
 {

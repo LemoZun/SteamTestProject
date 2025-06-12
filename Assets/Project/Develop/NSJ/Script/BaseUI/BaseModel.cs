@@ -1,98 +1,101 @@
-using System.Collections;
+using NSJ_SaveUtility;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public abstract class BaseModel
+namespace NSJ_MVVM
 {
-    public bool HasViewID;
-    public int ViewID;
-
-    /// <summary>
-    /// 모델을 초기화하는 메서드입니다.
-    /// </summary>
-    public void InitModel()
+    [System.Serializable]
+    public abstract class BaseModel
     {
-        Init();
-    }
+        public bool HasViewID;
+        public int ViewID;
 
-    /// <summary>
-    /// 모델을 초기화하는 메서드입니다. 이 메서드는 모델이 설정될 때 호출됩니다.
-    /// </summary>
-    public virtual void Init() { }
-
-
-    /// <summary>
-    /// 모델의 데이터를 Json 형식으로 저장하는 메서드입니다.
-    /// </summary>
-    /// <typeparam name="T">Model 타입 </typeparam>
-    public virtual void SaveData<T>() where T : BaseModel
-    {
-        string json = ToJson(this);
-        SaveEntry entry = new SaveEntry
+        /// <summary>
+        /// 모델을 초기화하는 메서드입니다.
+        /// </summary>
+        public void InitModel()
         {
-            SaveID = $"{typeof(T)}/{ViewID}",
-            Json = json
-        };
-        // SaveEntry 저장 로직
-        string saveJson = ToJson(entry);
-        // 여기에 SaveEntry를 저장하는 로직을 추가합니다.
-        // 현재는 테스트 게임매니저에 넣었지만 이후 SaveManager로 변경할 예정입니다.
-        SaveManager.Instance.AddSaveModelData(saveJson);
-    }
-    /// <summary>
-    /// 데이터를 로드하는 메서드입니다.
-    /// </summary>
-    /// <typeparam name="T">Model 타입 명</typeparam>
-    /// <param name="saveEntrys"></param>
-    public virtual void LoadData<T>() where T : BaseModel, ICopyable<T>
-    {
-        T model = null; 
-
-        GameData data = SaveManager.Instance.Data;
-        List<string> saveEntrys = data.Models;
-
-        // SaveEntry를 찾아서 로드하는 로직
-        foreach (string entryJson in saveEntrys)
-        {
-            SaveEntry saveEntry = FromJson<SaveEntry>(entryJson);
-            // entryJson.SaveID가 현재 모델의 SaveID와 일치하는지 확인합니다.
-            if (saveEntry.SaveID == $"{typeof(T)}/{ViewID}")
-            {
-                // entryJson.Json을 사용하여 모델을 로드합니다.
-                model = FromJson<T>(saveEntry.Json);
-            }
+            Init();
         }
-        AllCopyFrom<T>(model);
-    }
-    /// <summary>
-    /// 모델의 모든 데이터를 복사하는 메서드입니다.
-    /// </summary>
-    private void AllCopyFrom<T>(T model) where T : BaseModel, ICopyable<T>
-    {
-        HasViewID = model.HasViewID;
-        ViewID = model.ViewID;
-        ((ICopyable<T>)this).CopyFrom(model);
-    }
 
-    private string ToJson<T>(T instance) where T : class
-    {
-        string json = JsonUtility.ToJson(instance);
-        return json;
-    }
+        /// <summary>
+        /// 모델을 초기화하는 메서드입니다. 이 메서드는 모델이 설정될 때 호출됩니다.
+        /// </summary>
+        public virtual void Init() { }
 
-    private T FromJson<T>(string json)
-    {
-        T model = JsonUtility.FromJson<T>(json);
-        return model;
-    }
 
-    public void SubscribeSaveEvent<TModel>() where TModel : BaseModel
-    { 
-        SaveManager.Instance.OnSaveBeforeEvent += SaveData<TModel>;
-    }
-    public void UnsubscribeSaveEvent<TModel>() where TModel : BaseModel
-    {
-        SaveManager.Instance.OnSaveBeforeEvent -= SaveData<TModel>;
+        /// <summary>
+        /// 모델의 데이터를 Json 형식으로 저장하는 메서드입니다.
+        /// </summary>
+        /// <typeparam name="T">Model 타입 </typeparam>
+        public virtual void SaveData<T>() where T : BaseModel
+        {
+            string json = ToJson(this);
+            SaveEntry entry = new SaveEntry
+            {
+                SaveID = $"{typeof(T)}/{ViewID}",
+                Json = json
+            };
+            // SaveEntry 저장 로직
+            string saveJson = ToJson(entry);
+            // 여기에 SaveEntry를 저장하는 로직을 추가합니다.
+            // 현재는 테스트 게임매니저에 넣었지만 이후 SaveManager로 변경할 예정입니다.
+            SaveManager.Instance.AddSaveModelData(saveJson);
+        }
+        /// <summary>
+        /// 데이터를 로드하는 메서드입니다.
+        /// </summary>
+        /// <typeparam name="T">Model 타입 명</typeparam>
+        /// <param name="saveEntrys"></param>
+        public virtual void LoadData<T>() where T : BaseModel, ICopyable<T>
+        {
+            T model = null;
+
+            GameData data = SaveManager.Instance.Data;
+            List<string> saveEntrys = data.Models;
+
+            // SaveEntry를 찾아서 로드하는 로직
+            foreach (string entryJson in saveEntrys)
+            {
+                SaveEntry saveEntry = FromJson<SaveEntry>(entryJson);
+                // entryJson.SaveID가 현재 모델의 SaveID와 일치하는지 확인합니다.
+                if (saveEntry.SaveID == $"{typeof(T)}/{ViewID}")
+                {
+                    // entryJson.Json을 사용하여 모델을 로드합니다.
+                    model = FromJson<T>(saveEntry.Json);
+                }
+            }
+            AllCopyFrom(model);
+        }
+        /// <summary>
+        /// 모델의 모든 데이터를 복사하는 메서드입니다.
+        /// </summary>
+        private void AllCopyFrom<T>(T model) where T : BaseModel, ICopyable<T>
+        {
+            HasViewID = model.HasViewID;
+            ViewID = model.ViewID;
+            ((ICopyable<T>)this).CopyFrom(model);
+        }
+
+        private string ToJson<T>(T instance) where T : class
+        {
+            string json = JsonUtility.ToJson(instance);
+            return json;
+        }
+
+        private T FromJson<T>(string json)
+        {
+            T model = JsonUtility.FromJson<T>(json);
+            return model;
+        }
+
+        public void SubscribeSaveEvent<TModel>() where TModel : BaseModel
+        {
+            SaveManager.Instance.OnSaveBeforeEvent += SaveData<TModel>;
+        }
+        public void UnsubscribeSaveEvent<TModel>() where TModel : BaseModel
+        {
+            SaveManager.Instance.OnSaveBeforeEvent -= SaveData<TModel>;
+        }
     }
 }

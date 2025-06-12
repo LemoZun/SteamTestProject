@@ -1,32 +1,35 @@
 using System;
 using UnityEngine;
 
-public class BasePanel : MonoBehaviour
+namespace NSJ_MVVM
 {
-    [HideInInspector] public BaseCanvas Canvas;
-
-    [SerializeField] protected BaseView[] _views;
-
-    void Awake()
+    public class BasePanel : MonoBehaviour
     {
-        BindView();
-    }
+        [HideInInspector] public BaseCanvas Canvas;
 
-    public void ChangeView<TEnum>(TEnum view) where TEnum : Enum
-    {
-        int boxIndex = Util.ToIndex(view);
+        [SerializeField] protected BaseView[] _views;
 
-        for (int i = 0; i < _views.Length; i++)
+        void Awake()
         {
-            _views[i].gameObject.SetActive(i == boxIndex);
+            BindView();
         }
-    }
 
-    private void BindView()
-    {
-        foreach (BaseView view in _views)
+        public void ChangeView<TEnum>(TEnum view) where TEnum : Enum
         {
-            view.Panel = this;
+            int boxIndex = Util.ToIndex(view);
+
+            for (int i = 0; i < _views.Length; i++)
+            {
+                _views[i].gameObject.SetActive(i == boxIndex);
+            }
+        }
+
+        private void BindView()
+        {
+            foreach (BaseView view in _views)
+            {
+                view.Panel = this;
+            }
         }
     }
 }

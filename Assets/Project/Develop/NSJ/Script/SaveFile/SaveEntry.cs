@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-[System.Serializable]
-public class SaveEntry 
+namespace NSJ_SaveUtility
 {
-    public string SaveID;
-    public string Json;
+    [System.Serializable]
+    public class SaveEntry
+    {
+        public string SaveID;
+        public string Json;
+    }
 }

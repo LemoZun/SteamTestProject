@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
+using NSJ_MVVM;
+using NSJ_SaveUtility;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -57,14 +55,14 @@ public class StartView : BaseView<StartVIewModel>
 
     private void SubscribeSaveButton()
     {
-        for(int i = 0; i < _saves.Count; i++)
+        for (int i = 0; i < _saves.Count; i++)
         {
             int curNum = i;
-            _saves[curNum].Button.onClick.AddListener(() => 
+            _saves[curNum].Button.onClick.AddListener(() =>
             {
                 ClickSave(curNum);
             });
-        }   
+        }
     }
 
     private void ClickSave(int number)

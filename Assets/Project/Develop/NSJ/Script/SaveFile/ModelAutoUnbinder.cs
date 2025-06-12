@@ -1,21 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using NSJ_MVVM;
 using UnityEngine;
 
-public class ModelAutoUnbinder : MonoBehaviour
+namespace NSJ_SaveUtility
 {
-    private BaseModel _model;
-
-    public void Track<TModel>(TModel model) where TModel : BaseModel, ICopyable<TModel>
+    public class ModelAutoUnbinder : MonoBehaviour
     {
-        _model = model;
-    }
+        private BaseModel _model;
 
-    void OnDestroy()
-    {
-        if (_model != null)
+        public void Track<TModel>(TModel model) where TModel : BaseModel, ICopyable<TModel>
         {
-            SaveManager.UnRegisterModel(_model);
+            _model = model;
+        }
+
+        void OnDestroy()
+        {
+            if (_model != null)
+            {
+                SaveManager.UnRegisterModel(_model);
+            }
         }
     }
 }

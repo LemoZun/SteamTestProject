@@ -1,47 +1,47 @@
-using Steamworks;
 using System.IO;
-using System.Text;
 using UnityEngine;
 
-public class SaveUtility
+namespace NSJ_SaveUtility
 {
-    public static bool Save(ref GameData data, int saveNumber)
+    public class SaveUtility
     {
-
-        string json = JsonUtility.ToJson(data);
-#if UNITY_EDITOR
-        string path = $"{Application.persistentDataPath}/Save";
-
-        if (!Directory.Exists(path))
+        public static bool Save(ref GameData data, int saveNumber)
         {
-            Directory.CreateDirectory(path);
-        }
 
-        File.WriteAllText($"{path}/save{saveNumber}.txt", json);
+            string json = JsonUtility.ToJson(data);
+#if UNITY_EDITOR
+            string path = $"{Application.persistentDataPath}/Save";
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            File.WriteAllText($"{path}/save{saveNumber}.txt", json);
 
 #else
         byte[] bytes = Encoding.UTF8.GetBytes(json);
         SteamRemoteStorage.FileWrite($"save{saveNumber}.json", bytes, bytes.Length);
 #endif
-        return true;
-    }
-
-    public static GameData Load(int saveNumber, out bool success)
-    {
-
-#if UNITY_EDITOR
-        string path = $"{Application.persistentDataPath}/Save/save{saveNumber}.txt";
-
-        if (!File.Exists(path))
-        {
-            success = false;
-            return null;
+            return true;
         }
 
-        string json = File.ReadAllText(path);
+        public static GameData Load(int saveNumber, out bool success)
+        {
 
-        success = true;
-        return JsonUtility.FromJson<GameData>(json);
+#if UNITY_EDITOR
+            string path = $"{Application.persistentDataPath}/Save/save{saveNumber}.txt";
+
+            if (!File.Exists(path))
+            {
+                success = false;
+                return null;
+            }
+
+            string json = File.ReadAllText(path);
+
+            success = true;
+            return JsonUtility.FromJson<GameData>(json);
 
 #else
         if (SteamRemoteStorage.FileExists($"save{saveNumber}.json"))
@@ -60,5 +60,6 @@ public class SaveUtility
             return null;
         }
 #endif
+        }
     }
 }
