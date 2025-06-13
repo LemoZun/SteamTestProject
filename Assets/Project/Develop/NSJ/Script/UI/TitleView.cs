@@ -14,6 +14,24 @@ public class TitleView : BaseView<TitleViewModel>
         _option = GetUI<Button>("OptionButton");
         _exit = GetUI<Button>("ExitButton");
     }
+
+    protected override void InitStart()
+    {
+    }
+
+    protected override void OnViewModelRemoved()
+    {
+    }
+
+    protected override void OnViewModelSet()
+    {
+    }
+
+    protected override void ClearView()
+    {
+
+    }
+
     protected override void SubscribeEvents()
     {
         _start.onClick.AddListener(() => Panel.ChangeView(TitlePanel.View.Start));

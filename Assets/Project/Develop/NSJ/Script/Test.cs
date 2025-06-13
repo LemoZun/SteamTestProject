@@ -8,19 +8,19 @@ namespace NSJTest
 {
     public class Test : MonoBehaviour
     {
-        public void TestFunc(string apiName)
+        [SerializeField] private ScoreView view1;
+        [SerializeField] private ScoreView view2;
+        private void Update()
         {
-            GameData data = new GameData();
-
-            string json1 = JsonUtility.ToJson(data);
-            byte[] bytes1 = Encoding.UTF8.GetBytes(json1);
-            SteamRemoteStorage.FileWrite("save.json", bytes1, bytes1.Length);
-
-            int size = SteamRemoteStorage.GetFileSize("save.json");
-            byte[] bytes2 = new byte[size];
-            SteamRemoteStorage.FileRead("save.json", bytes2, size);
-            string json2 = Encoding.UTF8.GetString(bytes2);
-            JsonUtility.FromJson<GameData>(json2);
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                 view1.ExchangeViewModel(view2);
+           
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                view1.RemoveViewModel();
+            }
         }
     }
 

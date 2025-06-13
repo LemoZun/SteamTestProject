@@ -35,8 +35,8 @@ public class ScoreView : BaseView<ScoreViewModel>
     protected override void SubscribeEvents()
     {
         _save.onClick.AddListener(() => SaveData());
-        _scoreUp.onClick.AddListener(() => Model.AddScore(1));
-        _scoreDown.onClick.AddListener(() => Model.AddScore(-1));
+        _scoreUp.onClick.AddListener( () => AddScore(1));
+        _scoreDown.onClick.AddListener(() => AddScore(-1));
     }
 
     private void SaveData()
@@ -53,6 +53,17 @@ public class ScoreView : BaseView<ScoreViewModel>
     protected override void ClearView()
     {
         _score.text = "0";
+    }
+
+    protected override void InitStart()
+    {
+    }
+
+    private void AddScore(int value)
+    {
+        if (Model == null)
+            return;
+        Model.AddScore(value);
     }
 }
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace NSJ_MVVM
@@ -85,7 +86,7 @@ namespace NSJ_MVVM
                         {
                             // 뷰모델이 일치하는 경우, 해당 뷰모델을 뷰에 설정하고 지연 저장 리스트에서 제거합니다.
                             // 뷰모델이 로드되지 않은 경우에도 바인딩합니다.
-                            view.SetViewModel(Instance._delayStroage[i]);
+                            view.OnSetViewModel(Instance._delayStroage[i]);
                             Instance._delayStroage.RemoveAt(i);
 
                             index = Instance._bindings.FindIndex(x => x.View == view);
@@ -101,7 +102,7 @@ namespace NSJ_MVVM
                 {
                     // VIewID값이 Default인 경우, 지연 저장 리스트에서 첫번째 뷰모델을 꺼내서 뷰에 설정합니다.
                     TViewModel viewModel = Instance._delayStroage[0];
-                    view.SetViewModel(viewModel);
+                    view.OnSetViewModel(viewModel);
                     Instance._delayStroage.RemoveAt(0);
 
                     // 바인딩 됬음을 표시합니다
@@ -168,7 +169,7 @@ namespace NSJ_MVVM
             if (targetView == null) return false;
 
             // 뷰모델이 바인딩된 뷰를 찾았으므로, 해당 뷰에 뷰모델을 설정합니다.
-            targetView.SetViewModel(viewModel);
+            targetView.OnSetViewModel(viewModel);
 
             int index = Instance._bindings.FindIndex(x => x.View == targetView);
             // 이미 바인딩된 뷰가 있는 경우, 해당 뷰에 뷰모델을 다시 설정합니다.
@@ -186,7 +187,6 @@ namespace NSJ_MVVM
         /// <returns></returns>
         public static bool TryRebind(TViewModel viewModel)
         {
-
             if (Instance._bindings == null)
                 return false;
 
@@ -197,7 +197,7 @@ namespace NSJ_MVVM
                 {
                     IView<TViewModel> targetView = Instance._bindings[index].View;
                     Instance._bindings[index].ViewModel = viewModel;
-                    targetView.SetViewModel(viewModel);
+                    targetView.OnSetViewModel(viewModel);
                     return true;
                 }
             }
@@ -217,17 +217,76 @@ namespace NSJ_MVVM
                         // 이미 해당 View에 바인딩되어 있음. 추가 작업 불필요
                         if (Instance._bindings[oldIndex].View == targetView)
                             return true;
-                        Instance._bindings[oldIndex].View.RemoveViewModel();
+                        Instance._bindings[oldIndex].View.OnRemoveViewModel();
                         Instance._bindings[oldIndex].ViewModel = null;
                     }
 
-                    targetView.RemoveViewModel(); // 기존 뷰모델을 제거합니다.
-                    targetView.SetViewModel(viewModel);
+                    targetView.OnRemoveViewModel(); // 기존 뷰모델을 제거합니다.
+                    targetView.OnSetViewModel(viewModel);
                     Instance._bindings[index].ViewModel = viewModel;
                     return true;
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// 뷰모델 제거하여 바인딩
+        /// </summary>
+        public static bool TryRebind(IView<TViewModel> view)
+        {
+            if (Instance._bindings == null)
+                return false;
+            if (view == null)
+                return false;
+
+            // 바인딩 된 뷰 찾기
+            int index = Instance._bindings.FindIndex(x => x.View == view);
+            if (index >= 0) 
+            {
+                // 뷰모델 찾아서 지우고 null로 교체
+                view.OnRemoveViewModel();
+                Instance._bindings[index].ViewModel = null;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 뷰 끼리 교체하여 바인딩
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        public static bool TryRebind(IView<TViewModel> viewA, IView<TViewModel> viewB)
+        {
+            if (Instance._bindings == null)
+                return false;
+            if (viewA == null || viewB == null || viewA == viewB)
+                return false;
+
+            TViewModel viewModelA = null;
+            TViewModel viewModelB = null;
+            // 기존 뷰A에 있던 뷰모델 제거
+            int AIndex = Instance._bindings.FindIndex(x => x.View == viewA);
+            if (AIndex >= 0)
+            {
+                viewModelA = Instance._bindings[AIndex].ViewModel;
+                viewA.OnRemoveViewModel();
+            }
+            // 기존 뷰B에 있던 뷰모델 제거
+            int BIndex = Instance._bindings.FindIndex(x => x.View == viewB);
+            if (BIndex >= 0)
+            {
+                viewModelB = Instance._bindings[BIndex].ViewModel;
+                viewB.OnRemoveViewModel();
+            }
+
+            // 새로운 뷰모델 삽입
+            viewA.OnSetViewModel(viewModelB);
+            Instance._bindings[AIndex].ViewModel = viewModelB;
+
+            viewB.OnSetViewModel(viewModelA);
+            Instance._bindings[BIndex].ViewModel = viewModelA;
+            return true;
         }
 
         /// <summary>

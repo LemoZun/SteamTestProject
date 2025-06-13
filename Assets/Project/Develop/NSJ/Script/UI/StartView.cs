@@ -81,6 +81,22 @@ public class StartView : BaseView<StartVIewModel>
             }
         }
     }
+
+    protected override void InitStart()
+    {
+    }
+
+    protected override void ClearView()
+    {
+    }
+
+    protected override void OnViewModelSet()
+    {
+    }
+
+    protected override void OnViewModelRemoved()
+    {
+    }
 }
 
 public class StartVIewModel : BaseViewModel
