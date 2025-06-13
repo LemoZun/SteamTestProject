@@ -34,7 +34,7 @@ public class TitleView : BaseView<TitleViewModel>
 
     protected override void SubscribeEvents()
     {
-        _start.onClick.AddListener(() => Panel.ChangeView(TitlePanel.View.Start));
+        _start.onClick.AddListener(() => Panel.ChangeGroup(TitlePanel.Group.Start));
         _exit.onClick.AddListener(ExitGame);
     }
     private void ExitGame()

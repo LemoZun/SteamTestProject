@@ -17,6 +17,7 @@ namespace NSJ_SaveUtility
             if (_model != null)
             {
                 SaveManager.UnRegisterModel(_model);
+                _model.DestroyModel();
             }
         }
     }

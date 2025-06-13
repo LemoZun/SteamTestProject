@@ -10,6 +10,9 @@ namespace NSJTest
     {
         [SerializeField] private ScoreView view1;
         [SerializeField] private ScoreView view2;
+
+        [SerializeField] private Score score1;
+        [SerializeField] private Score score2;
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.O))
@@ -19,7 +22,7 @@ namespace NSJTest
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                view1.RemoveViewModel();
+                Destroy(score1.gameObject);
             }
         }
     }

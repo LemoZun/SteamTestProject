@@ -136,7 +136,7 @@ namespace NSJ_MVVM
         /// <returns></returns>
         public static bool TryBind(TViewModel viewModel)
         {
-            if (Instance._bindings == null || Instance._bindings.Count <= 0)
+            if (Instance._bindings == null || Instance._bindings.FirstOrDefault(v => v.ViewModel == null) == null)
             {
                 if (Instance._delayStroage == null)
                     Instance._delayStroage = new List<TViewModel>();
@@ -152,9 +152,9 @@ namespace NSJ_MVVM
             // 뷰모델에 바인딩된 뷰를 찾습니다.
             // 뷰모델이 로드되지 않은경우도 찾습니다
             if (viewModel.HasViewID.Value == false || viewModel.IsLoaded.Value == false)
-            {
+            {            
                 // 뷰모델이 ViewID를 가지고 있지 않은 경우, 바인딩되지 않은 뷰를 찾습니다.
-                targetView = Instance._bindings.FirstOrDefault(v => v.IsAvailable).View;
+                targetView = Instance. _bindings.FirstOrDefault(v => v.IsAvailable).View;
                 viewModel.IsLoaded.Value = true; // 뷰모델이 로드되었음을 표시합니다.
             }
             else
@@ -190,7 +190,7 @@ namespace NSJ_MVVM
             if (Instance._bindings == null)
                 return false;
 
-            if (viewModel.HasViewID.Value == false)
+            if (viewModel.HasViewID.Value == false || viewModel.IsLoaded.Value ==false)
             {
                 int index = Instance._bindings.FindIndex(v => v.IsAvailable);
                 if (index >= 0)
@@ -205,7 +205,7 @@ namespace NSJ_MVVM
             {
                 // 뷰중에서 찾기
                 // 뷰모델에 뷰ID가 있는경우 알맞은 뷰에 매핑 
-                int index = Instance._bindings.FindIndex(v => v.IsMahch(viewModel));
+                int index = Instance._bindings.FindIndex(v => v.IsMahch(viewModel)); 
                 if (index >= 0)
                 {
                     IView<TViewModel> targetView = Instance._bindings[index].View;
@@ -220,9 +220,9 @@ namespace NSJ_MVVM
                         Instance._bindings[oldIndex].View.OnRemoveViewModel();
                         Instance._bindings[oldIndex].ViewModel = null;
                     }
-
                     targetView.OnRemoveViewModel(); // 기존 뷰모델을 제거합니다.
                     targetView.OnSetViewModel(viewModel);
+
                     Instance._bindings[index].ViewModel = viewModel;
                     return true;
                 }

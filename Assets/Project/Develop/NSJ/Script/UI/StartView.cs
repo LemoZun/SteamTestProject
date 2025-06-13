@@ -31,7 +31,7 @@ public class StartView : BaseView<StartVIewModel>
 
     protected override void SubscribeEvents()
     {
-        _exit.onClick.AddListener(() => Panel.ChangeView(TitlePanel.View.Title));
+        _exit.onClick.AddListener(() => Panel.ChangeGroup(TitlePanel.Group.Title));
         SubscribeSaveButton();
     }
 

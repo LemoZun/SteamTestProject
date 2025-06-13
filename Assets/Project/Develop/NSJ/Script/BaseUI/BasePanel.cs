@@ -7,28 +7,28 @@ namespace NSJ_MVVM
     {
         [HideInInspector] public BaseCanvas Canvas;
 
-        [SerializeField] protected BaseView[] _views;
+        [SerializeField] protected BaseGroup[] _groups;
 
         void Awake()
         {
-            BindView();
+            BindGroup();
         }
 
-        public void ChangeView<TEnum>(TEnum view) where TEnum : Enum
+        public void ChangeGroup<TEnum>(TEnum view) where TEnum : Enum
         {
             int boxIndex = Util.ToIndex(view);
 
-            for (int i = 0; i < _views.Length; i++)
+            for (int i = 0; i < _groups.Length; i++)
             {
-                _views[i].gameObject.SetActive(i == boxIndex);
+                _groups[i].gameObject.SetActive(i == boxIndex);
             }
         }
 
-        private void BindView()
+        private void BindGroup()
         {
-            foreach (BaseView view in _views)
+            foreach (BaseGroup group in _groups)
             {
-                view.Panel = this;
+                group.Panel = this;
             }
         }
     }

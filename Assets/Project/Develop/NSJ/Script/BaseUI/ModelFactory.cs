@@ -10,7 +10,7 @@ namespace NSJ_MVVM
         /// </summary>
         public static TModel CreateModel<TModel, TViewModel>(MonoBehaviour owner)
             where TModel : BaseModel, ICopyable<TModel>, new()
-            where TViewModel : BaseViewModel<TModel>, new()
+            where TViewModel : BaseViewModel<TModel, TViewModel>, new()
         {
      
 

@@ -2,10 +2,11 @@ using UnityEngine;
 
 namespace NSJ_MVVM
 {
-    public class BaseView : BaseUI
+    public abstract class BaseView : BaseUI
     {
-        [HideInInspector] public BasePanel Panel;
-        [HideInInspector] public BaseCanvas Canvas => Panel.Canvas;
+        [HideInInspector] public BaseGroup Group;
+        [HideInInspector] public BasePanel Panel => Group.Panel;
+        [HideInInspector] public BaseCanvas Canvas => Group.Panel.Canvas;
     }
 
     public abstract class BaseView<TViewModel> : BaseView, IView<TViewModel> where TViewModel : BaseViewModel
@@ -62,8 +63,8 @@ namespace NSJ_MVVM
 
         //public void SetViewModel()
         //{
-            // 어처피 뷰 있을떄 뷰모델 생성하면 자동 삽입되고
-            // 뷰가 없어도 뷰모델이 잠깐 대기하다 뷰 생성됬을때 자동삽입되니 필요없을듯?
+        // 어처피 뷰 있을떄 뷰모델 생성하면 자동 삽입되고
+        // 뷰가 없어도 뷰모델이 잠깐 대기하다 뷰 생성됬을때 자동삽입되니 필요없을듯?
         //}
 
         /// <summary>
@@ -88,6 +89,8 @@ namespace NSJ_MVVM
         /// <param name="model"></param>
         public void OnSetViewModel(TViewModel model)
         {
+
+
             if (model == null) return;
             if (HasViewModel == true) return;
 
@@ -95,8 +98,7 @@ namespace NSJ_MVVM
             HasViewModel = true;
             Model.HasViewID.Value = HasViewID;
             Model.ViewID.Value = ViewID;
-
-            Model.OnRebindEvent += TryRebind;
+            Model.OnDestroyEvent += DestroyModel;
             OnViewModelSet();
         }
 
@@ -108,14 +110,12 @@ namespace NSJ_MVVM
         {
             if (HasViewModel == false) return;
 
-            Model.OnRebindEvent -= TryRebind;
+            Model.OnDestroyEvent -= DestroyModel;
             ClearView();
             OnViewModelRemoved();
-            Model = default;
+            Model = null;
             HasViewModel = false;
         }
-
- 
 
         /// <summary>
         /// 뷰가 Awake 단계에서 초기화되는 메서드입니다.
@@ -141,12 +141,18 @@ namespace NSJ_MVVM
         /// </summary>
         protected abstract void OnViewModelSet();
 
+        /// <summary>
+        /// 뷰모델이 해제되었을 때 호출되는 메서드입니다.
+        /// </summary>
         protected abstract void OnViewModelRemoved();
 
-
-        private void TryRebind()
+        /// <summary>
+        /// 모델 파괴시에 이벤트로 호출됩니다
+        /// </summary>
+        private void DestroyModel()
         {
-            ViewResistry<TViewModel>.TryRebind(Model);
+            ViewResistry<TViewModel>.TryRebind(this);
+            ClearView();
         }
     }
 }

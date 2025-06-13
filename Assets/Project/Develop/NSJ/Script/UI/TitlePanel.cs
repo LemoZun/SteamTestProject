@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TitlePanel : BasePanel 
 {
-    public enum View
+    public enum Group
     {
         Title,
         Start,
@@ -14,6 +14,6 @@ public class TitlePanel : BasePanel
 
     void OnEnable()
     {
-        ChangeView(View.Title);
+        ChangeGroup(Group.Title);
     }
 }

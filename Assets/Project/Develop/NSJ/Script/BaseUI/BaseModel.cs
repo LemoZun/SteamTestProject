@@ -8,20 +8,23 @@ namespace NSJ_MVVM
     [System.Serializable]
     public abstract class BaseModel
     {
-        
-        public bool IsLoaded { get {  return false; } set { _isLoaded = value; OnIsLoadedChanged?.Invoke(value); } }
+        public bool CanSave { get { return _canSave; }  set { _canSave = value; OnCansSaveChanged?.Invoke(value); } }
+        public bool IsLoaded { get {  return _isLoaded; } set { _isLoaded = value; OnIsLoadedChanged?.Invoke(value); } }
         public bool HasViewID { get { return _hasViewID; } set { _hasViewID = value; OnHasViewIDChanged?.Invoke(value); } }
         public int ViewID { get { return _viewID; } set { _viewID = value; OnViewIDChanged?.Invoke(value); } }
 
+        public event Action<bool> OnCansSaveChanged;
         public event Action<bool> OnIsLoadedChanged;
         public event Action<bool> OnHasViewIDChanged;
         public event Action<int> OnViewIDChanged;
 
-        [SerializeField]private bool _isLoaded;
-        [SerializeField]private bool _hasViewID;
-        [SerializeField]private int _viewID;
+        [SerializeField]private bool _canSave;
+        private bool _isLoaded;
+        private bool _hasViewID;
+        private int _viewID;
 
         public event Action OnLoadEvent;
+        public event Action OnDestroyEvent;
 
         public ModelSaveHandler _saveHandler;
         /// <summary>
@@ -33,6 +36,13 @@ namespace NSJ_MVVM
             Init();
         }
 
+        /// <summary>
+        /// 객체가 파괴되었을떄 호출되는 메서드입니다
+        /// </summary>
+        public void DestroyModel()
+        {
+            OnDestroyEvent?.Invoke();
+        }
         /// <summary>
         /// 모델을 초기화하는 메서드입니다. 이 메서드는 모델이 설정될 때 호출됩니다.
         /// </summary>

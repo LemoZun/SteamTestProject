@@ -16,6 +16,10 @@ namespace NSJ_SaveUtility
 
         public void Save<TModel>() where TModel : BaseModel
         {
+            // 세이브 안한다고 표시할 시 패스
+            if (_model.CanSave == false)
+                return;
+
             string json = ToJson(_model);
             SaveEntry entry = new SaveEntry
             {
@@ -62,11 +66,12 @@ namespace NSJ_SaveUtility
             if (loadData == null)
             {
                 // 저장 데이터가 없는 경우 로드되지 않음 표시
-                Debug.LogError($"데이터없음");
+                Debug.Log($"{typeof(T)} : 로딩할 데이터 없음");
                 _model.IsLoaded = false;
             }
             else
             {
+                _model.CanSave = loadData.CanSave;
                 _model.IsLoaded = true;
                 _model.HasViewID = loadData.HasViewID;
                 _model.ViewID = loadData.ViewID;
