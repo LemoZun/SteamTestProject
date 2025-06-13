@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace NSJ_MVVM
 {
-    public class BasePanel : MonoBehaviour
+    public abstract class BasePanel : MonoBehaviour
     {
         [HideInInspector] public BaseCanvas Canvas;
 

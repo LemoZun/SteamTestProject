@@ -81,5 +81,13 @@ namespace NSJ_SaveUtility
         {
             Data.Models.Add(saveJson);
         }
+
+        /// <summary>
+        /// 모델 데이터를 제거합니다.
+        /// </summary>
+        public void RemoveModelData(string saveJson)
+        {
+            Data.Models.Remove(saveJson);
+        }
     }
 }

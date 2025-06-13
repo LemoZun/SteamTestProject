@@ -20,14 +20,14 @@ namespace NSJ_MVVM
         }
     }
 
-    public class BaseViewModel<TModel> : BaseViewModel where TModel : BaseModel
+    public abstract class BaseViewModel<TModel> : BaseViewModel where TModel : BaseModel
     {
         protected TModel Model { get; set; }
 
         /// <summary>
         /// 뷰모델을 설정하는 메서드입니다. 이 메서드는 뷰모델이 설정될 때 호출됩니다.
         /// </summary>
-        public virtual void SetModel(TModel model)
+        public void SetModel(TModel model)
         {
             Model = model;
 
@@ -56,7 +56,7 @@ namespace NSJ_MVVM
         /// <summary>
         /// 뷰모델이 설정되었을 때 호출되는 메서드입니다. 이 메서드는 SetModel 메서드에서 호출됩니다.
         /// </summary>
-        protected virtual void OnModelSet() { }
+        protected abstract void OnModelSet();
 
     }
 }

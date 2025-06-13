@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace NSJ_MVVM
 {
-    public class BaseCanvas : MonoBehaviour
+    public abstract class BaseCanvas : MonoBehaviour
     {
         [SerializeField] protected BasePanel[] _panels;
 

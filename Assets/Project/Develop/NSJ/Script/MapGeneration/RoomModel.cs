@@ -1,8 +1,5 @@
 using NSJ_MVVM;
 using NSJ_SaveUtility;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public enum RoomType
 {
@@ -23,6 +20,8 @@ public class RoomModel : BaseModel, ICopyable<RoomModel>
 
     public void CopyFrom(RoomModel model)
     {
-        
+
     }
+
+    public override void Init() { }
 }

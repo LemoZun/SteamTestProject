@@ -60,11 +60,12 @@ namespace NSJ_MVVM
             ViewResistry<TViewModel>.UnResister(this);
         }
 
-        public void SetViewModel()
-        {
+        //public void SetViewModel()
+        //{
             // 어처피 뷰 있을떄 뷰모델 생성하면 자동 삽입되고
             // 뷰가 없어도 뷰모델이 잠깐 대기하다 뷰 생성됬을때 자동삽입되니 필요없을듯?
-        }
+        //}
+
         /// <summary>
         /// 뷰모델 지우기
         /// </summary>

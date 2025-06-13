@@ -37,4 +37,6 @@ public class ScoreModel : BaseModel, ICopyable<ScoreModel>
     {
         Score = model.Score;
     }
+
+    public override void Init() { }
 }

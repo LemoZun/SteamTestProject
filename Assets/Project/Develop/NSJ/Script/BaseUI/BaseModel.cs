@@ -22,18 +22,21 @@ namespace NSJ_MVVM
         [SerializeField]private int _viewID;
 
         public event Action OnLoadEvent;
+
+        public ModelSaveHandler _saveHandler;
         /// <summary>
         /// 모델을 초기화하는 메서드입니다.
         /// </summary>
         public void InitModel()
         {
+            _saveHandler = new ModelSaveHandler(this);
             Init();
         }
 
         /// <summary>
         /// 모델을 초기화하는 메서드입니다. 이 메서드는 모델이 설정될 때 호출됩니다.
         /// </summary>
-        public virtual void Init() { }
+        public abstract void Init();
 
 
         /// <summary>
@@ -42,17 +45,7 @@ namespace NSJ_MVVM
         /// <typeparam name="T">Model 타입 </typeparam>
         public virtual void SaveData<T>() where T : BaseModel
         {
-            string json = ToJson(this);
-            SaveEntry entry = new SaveEntry
-            {
-                SaveID = $"{typeof(T)}",
-                Json = json
-            };
-            // SaveEntry 저장 로직
-            string saveJson = ToJson(entry);
-            // 여기에 SaveEntry를 저장하는 로직을 추가합니다.
-            // 현재는 테스트 게임매니저에 넣었지만 이후 SaveManager로 변경할 예정입니다.
-            SaveManager.Instance.AddSaveModelData(saveJson);
+            _saveHandler.Save<T>();
         }
         /// <summary>
         /// 데이터를 로드하는 메서드입니다.
@@ -61,59 +54,10 @@ namespace NSJ_MVVM
         /// <param name="saveEntrys"></param>
         public virtual void LoadData<T>() where T : BaseModel, ICopyable<T>
         {
-            T loadData = null;
-
-            GameData data = SaveManager.Instance.Data;
-
-            List<string> saveEntrys = data.Models;
-
-            // SaveEntry를 찾아서 로드하는 로직
-            foreach (string entryJson in saveEntrys)
-            {
-                SaveEntry saveEntry = FromJson<SaveEntry>(entryJson);
-                // entryJson.SaveID가 현재 모델의 SaveID와 일치하는지 확인합니다.
-                if (saveEntry.SaveID == $"{typeof(T)}")
-                {
-                    // entryJson.Json을 사용하여 모델을 로드합니다.
-                    loadData = FromJson<T>(saveEntry.Json);
-                }
-            }
-            // 모델의 속성에 복사합니다.
-            AllCopyFrom(loadData);
-            OnLoadEvent?.Invoke();
-      
-        }
-        /// <summary>
-        /// 모델의 모든 데이터를 복사하는 메서드입니다.
-        /// </summary>
-        private void AllCopyFrom<T>(T loadData) where T : BaseModel, ICopyable<T>
-        {
-            if (loadData == null)
-            {
-                // 저장 데이터가 없는 경우 로드되지 않음 표시
-                Debug.LogError($"데이터없음");
-                IsLoaded = false;
-            }
-            else
-            {
-                IsLoaded = true;
-                HasViewID = loadData.HasViewID;
-                ViewID = loadData.ViewID;
-                ((ICopyable<T>)this).CopyFrom(loadData);
-            }
+            _saveHandler.Load<T>();
+            OnLoadEvent?.Invoke();    
         }
 
-        private string ToJson<T>(T instance) where T : class
-        {
-            string json = JsonUtility.ToJson(instance);
-            return json;
-        }
-
-        private T FromJson<T>(string json)
-        {
-            T model = JsonUtility.FromJson<T>(json);
-            return model;
-        }
 
         public void SubscribeSaveEvent<TModel>() where TModel : BaseModel
         {
