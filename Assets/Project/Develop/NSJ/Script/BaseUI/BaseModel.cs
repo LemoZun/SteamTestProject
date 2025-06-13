@@ -1,6 +1,5 @@
 using NSJ_SaveUtility;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace NSJ_MVVM
@@ -8,8 +7,8 @@ namespace NSJ_MVVM
     [System.Serializable]
     public abstract class BaseModel
     {
-        public bool CanSave { get { return _canSave; }  set { _canSave = value; OnCansSaveChanged?.Invoke(value); } }
-        public bool IsLoaded { get {  return _isLoaded; } set { _isLoaded = value; OnIsLoadedChanged?.Invoke(value); } }
+        public bool CanSave { get { return _canSave; } set { _canSave = value; OnCansSaveChanged?.Invoke(value); } }
+        public bool IsLoaded { get { return _isLoaded; } set { _isLoaded = value; OnIsLoadedChanged?.Invoke(value); } }
         public bool HasViewID { get { return _hasViewID; } set { _hasViewID = value; OnHasViewIDChanged?.Invoke(value); } }
         public int ViewID { get { return _viewID; } set { _viewID = value; OnViewIDChanged?.Invoke(value); } }
 
@@ -18,10 +17,11 @@ namespace NSJ_MVVM
         public event Action<bool> OnHasViewIDChanged;
         public event Action<int> OnViewIDChanged;
 
-        [SerializeField]private bool _canSave;
-        private bool _isLoaded;
-        private bool _hasViewID;
-        private int _viewID;
+        [Tooltip("세이브 여부")]
+        [SerializeField] public bool _canSave;
+        [HideInInspector] public bool _isLoaded;
+        [HideInInspector] public bool _hasViewID;
+        [HideInInspector] public int _viewID;
 
         public event Action OnLoadEvent;
         public event Action OnDestroyEvent;
@@ -65,7 +65,7 @@ namespace NSJ_MVVM
         public virtual void LoadData<T>() where T : BaseModel, ICopyable<T>
         {
             _saveHandler.Load<T>();
-            OnLoadEvent?.Invoke();    
+            OnLoadEvent?.Invoke();
         }
 
 
