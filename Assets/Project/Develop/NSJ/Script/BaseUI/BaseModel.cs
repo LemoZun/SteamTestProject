@@ -45,7 +45,7 @@ namespace NSJ_MVVM
             string json = ToJson(this);
             SaveEntry entry = new SaveEntry
             {
-                SaveID = $"{typeof(T)}/{ViewID}",
+                SaveID = $"{typeof(T)}",
                 Json = json
             };
             // SaveEntry 저장 로직
@@ -61,9 +61,10 @@ namespace NSJ_MVVM
         /// <param name="saveEntrys"></param>
         public virtual void LoadData<T>() where T : BaseModel, ICopyable<T>
         {
-            T model = null;
+            T loadData = null;
 
             GameData data = SaveManager.Instance.Data;
+
             List<string> saveEntrys = data.Models;
 
             // SaveEntry를 찾아서 로드하는 로직
@@ -71,32 +72,34 @@ namespace NSJ_MVVM
             {
                 SaveEntry saveEntry = FromJson<SaveEntry>(entryJson);
                 // entryJson.SaveID가 현재 모델의 SaveID와 일치하는지 확인합니다.
-                if (saveEntry.SaveID == $"{typeof(T)}/{ViewID}")
+                if (saveEntry.SaveID == $"{typeof(T)}")
                 {
                     // entryJson.Json을 사용하여 모델을 로드합니다.
-                    model = FromJson<T>(saveEntry.Json);
+                    loadData = FromJson<T>(saveEntry.Json);
                 }
             }
             // 모델의 속성에 복사합니다.
-            AllCopyFrom(model);
+            AllCopyFrom(loadData);
             OnLoadEvent?.Invoke();
+      
         }
         /// <summary>
         /// 모델의 모든 데이터를 복사하는 메서드입니다.
         /// </summary>
-        private void AllCopyFrom<T>(T model) where T : BaseModel, ICopyable<T>
+        private void AllCopyFrom<T>(T loadData) where T : BaseModel, ICopyable<T>
         {
-            if (model == null)
+            if (loadData == null)
             {
                 // 저장 데이터가 없는 경우 로드되지 않음 표시
+                Debug.LogError($"데이터없음");
                 IsLoaded = false;
             }
             else
             {
                 IsLoaded = true;
-                HasViewID = model.HasViewID;
-                ViewID = model.ViewID;
-                ((ICopyable<T>)this).CopyFrom(model);
+                HasViewID = loadData.HasViewID;
+                ViewID = loadData.ViewID;
+                ((ICopyable<T>)this).CopyFrom(loadData);
             }
         }
 

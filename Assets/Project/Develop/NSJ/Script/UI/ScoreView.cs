@@ -22,7 +22,7 @@ public class ScoreView : BaseView<ScoreViewModel>
     }
     protected override void OnViewModelRemoved()
     {
-        Model?.Score.UnBind(UpdateText);
+        Model?.Score.UnBind(UpdateText);;
     }
 
     protected override void InitAwake()
@@ -47,8 +47,12 @@ public class ScoreView : BaseView<ScoreViewModel>
 
     private void UpdateText(int value)
     {
-        _score.
-            text = $"{value}";
+        _score.text = $"{value}";
+    }
+
+    protected override void ClearView()
+    {
+        _score.text = "0";
     }
 }
 
@@ -58,7 +62,6 @@ public class ScoreViewModel : BaseViewModel<ScoreModel>
 
     public void AddScore(int value)
     {
-        Debug.Log("ºä¸ðµ¨");
         Model.ChangeScore(value);
     }
 

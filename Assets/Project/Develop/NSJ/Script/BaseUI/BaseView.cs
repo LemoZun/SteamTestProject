@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace NSJ_MVVM
@@ -52,6 +51,8 @@ namespace NSJ_MVVM
         {
             InitStart();
             SubscribeEvents();
+            if (Model == null)
+                ClearView();
         }
 
         private void OnDestroy()
@@ -71,15 +72,11 @@ namespace NSJ_MVVM
             HasViewModel = true;
             Model.HasViewID.Value = HasViewID;
             Model.ViewID.Value = ViewID;
-    
+
             Model.OnRebindEvent += TryRebind;
             OnViewModelSet();
         }
 
-        private void TryRebind()
-        {
-            ViewResistry<TViewModel>.TryRebind(Model);
-        }
 
         /// <summary>
         /// 뷰모델을 제거합니다. 현재 뷰모델이 설정되어 있지 않으면 아무 작업도 하지 않습니다.
@@ -89,6 +86,7 @@ namespace NSJ_MVVM
             if (HasViewModel == false) return;
 
             Model.OnRebindEvent -= TryRebind;
+            ClearView();
             OnViewModelRemoved();
             Model = default;
             HasViewModel = false;
@@ -108,6 +106,10 @@ namespace NSJ_MVVM
         /// </summary>
         protected virtual void SubscribeEvents() { }
 
+        /// <summary>
+        /// 뷰를 초기화합니다
+        /// </summary>
+        protected virtual void ClearView() { }
 
         /// <summary>
         /// 뷰모델이 설정되었을 때 호출되는 메서드입니다.
@@ -115,5 +117,11 @@ namespace NSJ_MVVM
         protected virtual void OnViewModelSet() { }
 
         protected virtual void OnViewModelRemoved() { }
+
+
+        private void TryRebind()
+        {
+            ViewResistry<TViewModel>.TryRebind(Model);
+        }
     }
 }
