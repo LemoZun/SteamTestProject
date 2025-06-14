@@ -9,16 +9,18 @@ public class Score : BaseController<ScoreModel, ScoreViewModel>
 
     protected override void OnAwake()
     {
-        _model.CanSave = true;
+        EnableSave();
     }
 
-    private void Start()
+    protected override void OnStart()
     {
-        LoadData();
+       
     }
 
     private void Update()
     {
+
+
         if (isSecond)
         {
             if (Input.GetKeyDown(KeyCode.A))
@@ -42,7 +44,6 @@ public class Score : BaseController<ScoreModel, ScoreViewModel>
                 _model.Score += 1;
             }
         }
-
     }
 }
 
@@ -64,5 +65,10 @@ public class ScoreModel : BaseModel, ICopyable<ScoreModel>
         Score = model.Score;
     }
 
-    public override void Init() { }
+    protected override void Init() { }
+
+    protected override void OnLoadModel()
+    {
+        
+    }
 }

@@ -16,6 +16,11 @@ namespace NSJ_SaveUtility
         public event UnityAction OnSaveEvent;
         public event UnityAction<List<string>> OnLoadEvent;
 
+        /// <summary>
+        /// 데이터를 저장합니다
+        /// </summary>
+        /// <param name="saveNumber"></param>
+        /// <returns></returns>
         public bool SaveData(int saveNumber = int.MinValue)
         {
             Data.Models.Clear();
@@ -40,6 +45,11 @@ namespace NSJ_SaveUtility
             return success;
         }
 
+        /// <summary>
+        /// 데이터를 로드합니다
+        /// </summary>
+        /// <param name="saveNumber"></param>
+        /// <returns></returns>
         public bool LoadData(int saveNumber)
         {
             Data = SaveUtility.Load(saveNumber, out bool success);

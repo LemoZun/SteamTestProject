@@ -81,12 +81,25 @@ namespace NSJ_SaveUtility
                 ((ICopyable<T>)_model).CopyFrom(loadData);
             }
         }
+
+        /// <summary>
+        /// 클래스를 Json화 합니다
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <returns></returns>
         private string ToJson<T>(T instance) where T : class
         {
             string json = JsonUtility.ToJson(instance);
             return json;
         }
 
+        /// <summary>
+        /// json을 클래스화 합니다
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="json"></param>
+        /// <returns></returns>
         private T FromJson<T>(string json)
         {
             T model = JsonUtility.FromJson<T>(json);

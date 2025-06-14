@@ -8,13 +8,14 @@ public class TestPlayer : BaseController<TestPlayerModel, TestPlayerViewModel>
 {
     protected override void OnAwake()
     {
-        _model.CanSave = true;
+        EnableSave();
     }
 
-    private void Start()
-    {     
-        LoadData();
+    protected override void OnStart()
+    {
+        
     }
+
 
     private void Update()
     {
@@ -36,7 +37,12 @@ public class TestPlayerModel : BaseModel, ICopyable<TestPlayerModel>
         Name = model.Name;
     }
 
-    public override void Init()
+    protected override void Init()
+    {
+        
+    }
+
+    protected override void OnLoadModel()
     {
         
     }

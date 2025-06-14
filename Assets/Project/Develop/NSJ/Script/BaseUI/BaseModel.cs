@@ -37,6 +37,7 @@ namespace NSJ_MVVM
             Init();
         }
 
+
         /// <summary>
         /// 객체가 파괴되었을떄 호출되는 메서드입니다
         /// </summary>
@@ -47,9 +48,12 @@ namespace NSJ_MVVM
         /// <summary>
         /// 모델을 초기화하는 메서드입니다. 이 메서드는 모델이 설정될 때 호출됩니다.
         /// </summary>
-        public abstract void Init();
+        protected abstract void Init();
 
-
+        /// <summary>
+        /// 모델 데이터가 로드된 후 호출되는 메서드입니다
+        /// </summary>
+        protected abstract void OnLoadModel();
         /// <summary>
         /// 모델의 데이터를 Json 형식으로 저장하는 메서드입니다.
         /// </summary>
@@ -66,6 +70,7 @@ namespace NSJ_MVVM
         public virtual string LoadData<T>(List<string> saveEntrys) where T : BaseModel, ICopyable<T>
         {
             string returnJson = _saveHandler.Load<T>(saveEntrys);
+            OnLoadModel();
             OnLoadEvent?.Invoke();
             return returnJson;
         }

@@ -11,10 +11,11 @@ public class TestEnemy : BaseController<TestEnemyModel, TestEnemyViewModel>
         
     }
 
-    void Start()
+    protected override void OnStart()
     {
-        LoadData();
+        
     }
+
 
     private void Update()
     {
@@ -34,9 +35,14 @@ public class TestEnemyModel : BaseModel, ICopyable<TestEnemyModel>
         name = model.name;
     }
 
-    public override void Init()
+    protected override void Init()
     {
 
+    }
+
+    protected override void OnLoadModel()
+    {
+       
     }
 }
 

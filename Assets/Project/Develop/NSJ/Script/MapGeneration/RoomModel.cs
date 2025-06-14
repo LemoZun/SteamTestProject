@@ -23,5 +23,10 @@ public class RoomModel : BaseModel, ICopyable<RoomModel>
 
     }
 
-    public override void Init() { }
+    protected override void Init() { }
+
+    protected override void OnLoadModel()
+    {
+        
+    }
 }

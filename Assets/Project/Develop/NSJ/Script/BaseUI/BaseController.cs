@@ -23,20 +23,46 @@ namespace NSJ_MVVM
             OnAwake();
         }
 
-        protected abstract void OnAwake();
-
-        protected void LoadData()
+        protected virtual void Start()
         {
-            ProcessLoad();
+            LoadData();
+            OnStart();
         }
 
-        private void ProcessLoad()
+        /// <summary>
+        /// Awake대신 호출합니다. 모델 생성 후 호출됩니다
+        /// </summary>
+        protected abstract void OnAwake();
+        /// <summary>
+        /// Start대신 호출합니다. 모델 데이터 로드 후 호출됩니다
+        /// </summary>
+        protected abstract void OnStart();
+
+        /// <summary>
+        /// 데이터를 로드합니다
+        /// </summary>
+        protected void LoadData()
         {
             ISaveProvidable providable = GetComponent<ISaveProvidable>();
             if (providable != null)
             {
                 providable.LoadModel();
             }
+        }
+
+        /// <summary>
+        /// 모델을 세이브하도록 합니다. Awake에서 호출해야합니다
+        /// </summary>
+        protected void EnableSave()
+        {
+            _model.CanSave = true;
+        }
+        /// <summary>
+        /// 모델을 세이브하지 않도록 합니다. Awake에서 호출해야합니다
+        /// </summary>
+        protected void DisableSave()
+        {
+            _model.CanSave = false;
         }
 
 
