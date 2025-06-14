@@ -20,9 +20,9 @@ namespace NSJ_MVVM
 
         [Tooltip("세이브 여부")]
         [SerializeField] public bool _canSave;
-        [HideInInspector] public bool _isLoaded;
-        [HideInInspector] public bool _hasViewID;
-        [HideInInspector] public int _viewID;
+        [SerializeField] public bool _isLoaded;
+        [SerializeField] public bool _hasViewID;
+        [SerializeField] public int _viewID;
 
         public event Action OnLoadEvent;
         public event Action OnDestroyEvent;

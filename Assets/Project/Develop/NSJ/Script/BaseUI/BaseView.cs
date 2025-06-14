@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Profiling.HierarchyFrameDataView;
 
 namespace NSJ_MVVM
 {
@@ -90,9 +91,13 @@ namespace NSJ_MVVM
         public void OnSetViewModel(TViewModel model)
         {
 
-
             if (model == null) return;
-            if (HasViewModel == true) return;
+
+            if (HasViewModel == true)
+            {
+                OnViewModelSet();
+                return;
+            }
 
             Model = model;
             HasViewModel = true;
