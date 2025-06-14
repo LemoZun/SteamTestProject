@@ -1,4 +1,5 @@
 using NSJ_MVVM;
+using System;
 using UnityEngine;
 
 namespace NSJ_SaveUtility
@@ -10,9 +11,10 @@ namespace NSJ_SaveUtility
         /// <summary>
         /// 모델을 캐싱하고 추적합니다
         /// </summary>
-        public void Track<TModel>(TModel model) where TModel : BaseModel, ICopyable<TModel>
+        public void Track<TModel>(TModel model) where TModel : BaseModel
         {
             _model = model;
+            SaveManager.RegisterModel<TModel>(model);
         }
 
         /// <summary>
@@ -20,8 +22,14 @@ namespace NSJ_SaveUtility
         /// </summary>
         void OnDestroy()
         {
+            UnTrack();
+        }
+
+        private void UnTrack() 
+        {
             if (_model != null)
             {
+                SaveManager.UnRegisterModel(_model);
                 _model.DestroyModel();
             }
         }

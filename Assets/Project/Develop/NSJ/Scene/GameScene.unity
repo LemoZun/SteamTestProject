@@ -454,13 +454,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 043fd49e54a7e2b41bacf1dc73d8fd60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSecond: 1
   _model:
-    _canSave: 1
+    _canSave: 0
     _isLoaded: 0
     _hasViewID: 0
     _viewID: 0
     _score: 0
-  isSecond: 1
 --- !u!1 &372950610
 GameObject:
   m_ObjectHideFlags: 0
@@ -810,7 +810,7 @@ MonoBehaviour:
   view1: {fileID: 1874263145}
   view2: {fileID: 214213152}
   score1: {fileID: 1568131033}
-  score2: {fileID: 310714540}
+  score2: {fileID: 0}
 --- !u!1 &717030772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,13 +1334,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 043fd49e54a7e2b41bacf1dc73d8fd60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSecond: 0
   _model:
     _canSave: 1
     _isLoaded: 0
     _hasViewID: 0
     _viewID: 0
     _score: 0
-  isSecond: 0
 --- !u!1 &1606229795
 GameObject:
   m_ObjectHideFlags: 0

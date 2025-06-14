@@ -17,6 +17,24 @@ namespace NSJ_SaveUtility
         public event UnityAction<List<string>> OnLoadEvent;
 
         /// <summary>
+        /// 모델이 세이브 이벤트를 구독합니다
+        /// </summary>
+        public static void RegisterModel<TModel>(TModel model) where TModel : BaseModel
+        {
+            SetSingleton();
+            model.SubscribeSaveEvent<TModel>();
+        }
+
+        /// <summary>
+        /// 모델이 세이브 이벤트를 해제합니다
+        /// </summary>
+        public static void UnRegisterModel<TModel>(TModel model) where TModel : BaseModel
+        {
+            model.UnsubscribeSaveEvent<TModel>();
+        }
+
+
+        /// <summary>
         /// 데이터를 저장합니다
         /// </summary>
         /// <param name="saveNumber"></param>

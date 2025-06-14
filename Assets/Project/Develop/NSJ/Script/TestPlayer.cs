@@ -5,18 +5,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class TestPlayer : BaseController<TestPlayerModel, TestPlayerViewModel>
+public class TestPlayer : MonoBehaviour
 {
-    protected override void OnAwake()
+    [SerializeField] private TestPlayerModel _model;
+
+    private void Awake()
     {
-        EnableSave();
+        _model = ModelFactory.CreateModel<TestPlayerModel,TestPlayerViewModel>(this);
+        _model.CanSave = true;
     }
 
-    protected override void OnStart()
+    private void Start()
     {
-        
+        _model.LoadData<TestPlayerModel>();
     }
-
 
     private void Update()
     {

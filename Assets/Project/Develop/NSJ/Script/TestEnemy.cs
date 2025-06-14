@@ -2,20 +2,18 @@ using NSJ_MVVM;
 using NSJ_SaveUtility;
 using UnityEngine;
 
-public class TestEnemy : BaseController<TestEnemyModel, TestEnemyViewModel>
+public class TestEnemy : MonoBehaviour
 {
+    [SerializeField] private TestEnemyModel _model;
+    private void Awake()
+    {
+        _model = ModelFactory.CreateModel<TestEnemyModel,TestEnemyViewModel>(this);
+    }
 
-
-    protected override void OnAwake()
+    private void Start()
     {
         
     }
-
-    protected override void OnStart()
-    {
-        
-    }
-
 
     private void Update()
     {

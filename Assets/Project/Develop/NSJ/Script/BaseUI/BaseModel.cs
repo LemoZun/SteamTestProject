@@ -58,21 +58,36 @@ namespace NSJ_MVVM
         /// 모델의 데이터를 Json 형식으로 저장하는 메서드입니다.
         /// </summary>
         /// <typeparam name="T">Model 타입 </typeparam>
-        public virtual string SaveData<T>() where T : BaseModel
+        public virtual void SaveData<T>() where T : BaseModel
         {
-            return _saveHandler.Save<T>();
+            _saveHandler.Save<T>();
         }
         /// <summary>
         /// 데이터를 로드하는 메서드입니다.
         /// </summary>
         /// <typeparam name="T">Model 타입 명</typeparam>
         /// <param name="saveEntrys"></param>
-        public virtual string LoadData<T>(List<string> saveEntrys) where T : BaseModel, ICopyable<T>
+        public virtual void LoadData<T>() where T : BaseModel, ICopyable<T>
         {
-            string returnJson = _saveHandler.Load<T>(saveEntrys);
+            _saveHandler.Load<T>();
             OnLoadModel();
             OnLoadEvent?.Invoke();
-            return returnJson;
+        }
+
+        /// <summary>
+        /// 세이브 하기 전의 이벤트에 대해 구독합니다
+        /// </summary>
+        public void SubscribeSaveEvent<T>() where T : BaseModel
+        {
+            SaveManager.Instance.OnSaveBeforeEvent += SaveData<T>;
+        }
+        /// <summary>
+        /// 객체가 파괴될 때 세이브 하기 전의 이벤트에 대해 구독을 끊습니다
+        /// </summary>
+        public void UnsubscribeSaveEvent<T>() where T : BaseModel
+        {
+            if (SaveManager.Instance == null) return;
+            SaveManager.Instance.OnSaveBeforeEvent -= SaveData<T>;
         }
     }
 }
