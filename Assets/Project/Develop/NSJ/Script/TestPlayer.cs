@@ -4,19 +4,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestPlayer : MonoBehaviour
+public class TestPlayer : BaseController<TestPlayerModel, TestPlayerViewModel>
 {
-    [SerializeField] TestPlayerModel _model;
-
-    private void Awake()
+    protected override void OnAwake()
     {
-        _model = ModelFactory.CreateModel<TestPlayerModel, TestPlayerViewModel>(this);
         _model.CanSave = true;
     }
 
     private void Start()
     {     
-        _model.LoadData<TestPlayerModel>();
+        LoadData();
     }
 
     private void Update()

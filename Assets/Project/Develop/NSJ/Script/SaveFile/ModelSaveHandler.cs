@@ -1,4 +1,5 @@
 using NSJ_MVVM;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,11 +15,11 @@ namespace NSJ_SaveUtility
             _model = model; 
         }
 
-        public void Save<TModel>() where TModel : BaseModel
+        public string Save<TModel>() where TModel : BaseModel
         {
             // 세이브 안한다고 표시할 시 패스
             if (_model.CanSave == false)
-                return;
+                return string.Empty;
 
             string json = ToJson(_model);
             SaveEntry entry = new SaveEntry
@@ -28,18 +29,18 @@ namespace NSJ_SaveUtility
             };
             // SaveEntry 저장 로직
             string saveJson = ToJson(entry);
+
+            return saveJson;
             // 여기에 SaveEntry를 저장하는 로직을 추가합니다.
             // 현재는 테스트 게임매니저에 넣었지만 이후 SaveManager로 변경할 예정입니다.
-            SaveManager.Instance.AddSaveModelData(saveJson);
+            //SaveManager.Instance.AddSaveModelData(saveJson);
         }
 
-        public void Load<TModel>() where TModel : BaseModel, ICopyable<TModel>
+        public string Load<TModel>(List<string> saveEntrys) where TModel : BaseModel, ICopyable<TModel>
         {
+            string returnJson = string.Empty;
+
             TModel loadData = null;
-
-            GameData data = SaveManager.Instance.Data;
-
-            List<string> saveEntrys = data.Models;
 
             // SaveEntry를 찾아서 로드하는 로직
             foreach (string entryJson in saveEntrys)
@@ -51,12 +52,14 @@ namespace NSJ_SaveUtility
                     // entryJson.Json을 사용하여 모델을 로드합니다.
                     loadData = FromJson<TModel>(saveEntry.Json);
                     // 사용한 모델 데이터 삭제
-                    SaveManager.Instance.RemoveModelData(entryJson);
+                    returnJson = entryJson;
                     break;
                 }
             }
             // 모델의 속성에 복사합니다.
             AllCopyFrom(loadData);
+
+            return returnJson;
         }
         /// <summary>
         /// 모델의 모든 데이터를 복사하는 메서드입니다.

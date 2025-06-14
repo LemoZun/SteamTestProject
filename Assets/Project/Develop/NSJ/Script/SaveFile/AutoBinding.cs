@@ -10,9 +10,6 @@ namespace NSJ_SaveUtility
         /// </summary>
         public static void Bind<TModel>(TModel model, MonoBehaviour owner) where TModel : BaseModel, ICopyable<TModel>
         {
-            // 세이브 매니저에 모델을 등록합니다
-            SaveManager.RegisterModel(model);
-
             // 모델을 자동으로 언바인딩할 수 있도록 설정합니다.
             ModelAutoUnbinder unbinder = owner.GetComponentInChildren<ModelAutoUnbinder>();
             if (unbinder == null)

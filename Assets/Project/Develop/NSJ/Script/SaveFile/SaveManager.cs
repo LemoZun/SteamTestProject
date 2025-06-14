@@ -16,23 +16,6 @@ namespace NSJ_SaveUtility
         public event UnityAction OnSaveEvent;
         public event UnityAction<List<string>> OnLoadEvent;
 
-        /// <summary>
-        /// 모델의 저장 이벤트를 등록합니다.
-        /// </summary>
-        public static void RegisterModel<TModel>(TModel model) where TModel : BaseModel
-        {
-            SetSingleton();
-            model.SubscribeSaveEvent<TModel>();
-        }
-
-        /// <summary>
-        /// 모델의 저장 이벤트를 등록 해제합니다.
-        /// </summary>
-        public static void UnRegisterModel<TModel>(TModel model) where TModel : BaseModel
-        {
-            model.UnsubscribeSaveEvent<TModel>();
-        }
-
         public bool SaveData(int saveNumber = int.MinValue)
         {
             Data.Models.Clear();

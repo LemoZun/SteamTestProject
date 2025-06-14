@@ -1,5 +1,6 @@
 using NSJ_SaveUtility;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NSJ_MVVM
@@ -53,29 +54,20 @@ namespace NSJ_MVVM
         /// 모델의 데이터를 Json 형식으로 저장하는 메서드입니다.
         /// </summary>
         /// <typeparam name="T">Model 타입 </typeparam>
-        public virtual void SaveData<T>() where T : BaseModel
+        public virtual string SaveData<T>() where T : BaseModel
         {
-            _saveHandler.Save<T>();
+            return _saveHandler.Save<T>();
         }
         /// <summary>
         /// 데이터를 로드하는 메서드입니다.
         /// </summary>
         /// <typeparam name="T">Model 타입 명</typeparam>
         /// <param name="saveEntrys"></param>
-        public virtual void LoadData<T>() where T : BaseModel, ICopyable<T>
+        public virtual string LoadData<T>(List<string> saveEntrys) where T : BaseModel, ICopyable<T>
         {
-            _saveHandler.Load<T>();
+            string returnJson = _saveHandler.Load<T>(saveEntrys);
             OnLoadEvent?.Invoke();
-        }
-
-
-        public void SubscribeSaveEvent<TModel>() where TModel : BaseModel
-        {
-            SaveManager.Instance.OnSaveBeforeEvent += SaveData<TModel>;
-        }
-        public void UnsubscribeSaveEvent<TModel>() where TModel : BaseModel
-        {
-            SaveManager.Instance.OnSaveBeforeEvent -= SaveData<TModel>;
+            return returnJson;
         }
     }
 }

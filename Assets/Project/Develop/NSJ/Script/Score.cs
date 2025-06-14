@@ -3,20 +3,18 @@ using NSJ_SaveUtility;
 using System;
 using UnityEngine;
 
-public class Score : MonoBehaviour
+public class Score : BaseController<ScoreModel, ScoreViewModel>
 {
-    [SerializeField] ScoreModel _model;
-
     [SerializeField] bool isSecond;
 
-    private void Awake()
+    protected override void OnAwake()
     {
-        _model = ModelFactory.CreateModel<ScoreModel, ScoreViewModel>(this);
         _model.CanSave = true;
     }
+
     private void Start()
     {
-        _model.LoadData<ScoreModel>();
+        LoadData();
     }
 
     private void Update()
