@@ -18,16 +18,23 @@ public class StartView : BaseView<StartVIewModel>
     private List<SaveSlot> _saves = new List<SaveSlot>();
 
 
-    private void OnEnable()
-    {
-        RefreshSaveSlot();
-    }
 
     protected override void InitAwake()
     {
         InitSaveButton();
         _exit = GetUI<Button>("ExitButton");
     }
+
+    private void OnEnable()
+    {
+        RefreshSaveSlot();
+    }
+
+
+    protected override void InitStart()
+    {
+    }
+
 
     protected override void SubscribeEvents()
     {
@@ -82,9 +89,6 @@ public class StartView : BaseView<StartVIewModel>
         }
     }
 
-    protected override void InitStart()
-    {
-    }
 
     protected override void ClearView()
     {
@@ -96,6 +100,26 @@ public class StartView : BaseView<StartVIewModel>
 
     protected override void OnViewModelRemoved()
     {
+    }
+
+    public override void Register()
+    {
+        ViewResistry<StartView>.Resister(this);
+    }
+
+    public override void UnResister()
+    {
+        ViewResistry<StartView>.UnResister(this);
+    }
+
+    public override void RemoveViewModel()
+    {
+        ViewResistry<StartView>.RemoveRebind(this);
+    }
+
+    public override void ExchangeViewModel(IView<StartVIewModel> otherView)
+    {
+        ViewResistry<StartView>.ExchangeRebind(this, otherView);
     }
 }
 

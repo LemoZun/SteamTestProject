@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEditor.Profiling.HierarchyFrameDataView;
 
 namespace NSJ_MVVM
 {
@@ -10,7 +9,8 @@ namespace NSJ_MVVM
         [HideInInspector] public BaseCanvas Canvas => Group.Panel.Canvas;
     }
 
-    public abstract class BaseView<TViewModel> : BaseView, IView<TViewModel> where TViewModel : BaseViewModel
+    public abstract class BaseView<TViewModel> : BaseView, IView<TViewModel>
+        where TViewModel : BaseViewModel
     {
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace NSJ_MVVM
         {
             base.Awake();
             InitAwake();
-            ViewResistry<TViewModel>.Resister(this);
+            Register();
         }
         protected virtual void Start()
         {
@@ -57,9 +57,9 @@ namespace NSJ_MVVM
                 ClearView();
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
-            ViewResistry<TViewModel>.UnResister(this);
+            UnResister();
         }
 
         //public void SetViewModel()
@@ -69,21 +69,36 @@ namespace NSJ_MVVM
         //}
 
         /// <summary>
-        /// 뷰모델 지우기
+        /// 레지스트리에 본인을 등록합니다 
+        /// 예시: ViewResistry.Resister(this);
         /// </summary>
-        public void RemoveViewModel()
-        {
-            ViewResistry<TViewModel>.TryRebind(this);
-        }
+        public abstract void Register();
 
         /// <summary>
-        /// 두 뷰의 뷰모델 교체하기
+        /// 레지스트리에 본인을 해제합니다
+        /// ViewResistry<View>.UnResister(this);
         /// </summary>
-        public void ExchangeViewModel(IView<TViewModel> otherView)
-        {
-            ViewResistry<TViewModel>.TryRebind(this, otherView);
-        }
+        public abstract void UnResister();
 
+        /// <summary>
+        /// 현재 뷰에서 연결된 뷰모델을 제거합니다
+        /// ViewResistry.RemoveRebind(this);
+        /// </summary>
+        public abstract void RemoveViewModel();
+
+        /// <summary>
+        /// 다른 뷰와 뷰모델을 교체합니다
+        /// ViewResistry.ExchangeRebind(this, other);
+        /// </summary>
+        public abstract void ExchangeViewModel(IView<TViewModel> otherView);
+        /// <summary>
+        /// 명시적으로 강제 캐스팅
+        /// </summary>
+        /// <param name="viewModel"></param>
+        public void OnSetViewModel(IViewModel viewModel)
+        {
+            OnSetViewModel((TViewModel)viewModel);
+        }
         /// <summary>
         /// 뷰모델을 설정하였을때, 설정을 초기화합니다. 이미 설정된 경우에는 아무 작업도 하지 않습니다.
         /// </summary>
@@ -156,7 +171,7 @@ namespace NSJ_MVVM
         /// </summary>
         private void DestroyModel()
         {
-            ViewResistry<TViewModel>.TryRebind(this);
+            ViewResistry<BaseView<TViewModel>>.RemoveRebind(this);
             ClearView();
         }
     }

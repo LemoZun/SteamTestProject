@@ -45,6 +45,26 @@ public class TitleView : BaseView<TitleViewModel>
         Application.Quit();
 #endif  
     }
+
+    public override void Register()
+    {
+        ViewResistry<TitleView>.Resister(this);
+    }
+
+    public override void UnResister()
+    {
+        ViewResistry<TitleView>.UnResister(this);
+    }
+
+    public override void RemoveViewModel()
+    {
+        ViewResistry<TitleView>.RemoveRebind(this);
+    }
+
+    public override void ExchangeViewModel(IView<TitleViewModel> otherView)
+    {
+        ViewResistry<TitleView>.ExchangeRebind(this, otherView);
+    }
 }
 
 public class TitleViewModel : BaseViewModel

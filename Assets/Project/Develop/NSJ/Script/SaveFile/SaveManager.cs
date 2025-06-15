@@ -16,6 +16,7 @@ namespace NSJ_SaveUtility
         public event UnityAction OnSaveEvent;
         public event UnityAction<List<string>> OnLoadEvent;
 
+
         /// <summary>
         /// 모델이 세이브 이벤트를 구독합니다
         /// </summary>
@@ -80,10 +81,33 @@ namespace NSJ_SaveUtility
                     Data.SaveNumber = saveNumber;
                 }
             }
+
             OnLoadEvent?.Invoke(Data.Models);
 
             return success;
         }
+
+        public bool TryReload<TModel>(TModel model, out TModel returnModel) where TModel : BaseModel, ICopyable<TModel>
+        {
+            returnModel = null;
+
+            foreach (string json in Models)
+            {
+                SaveEntry entry = FromJson<SaveEntry>(json);
+                TModel loadModel = FromJson<TModel>(entry.Json);
+
+                if (loadModel != null) 
+                {
+                    // 일치한다고 판단
+                    returnModel = loadModel;
+                    RemoveModelData(json);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
 
         /// <summary>
         /// 모델 데이터를 추가합니다.
@@ -99,6 +123,30 @@ namespace NSJ_SaveUtility
         public void RemoveModelData(string saveJson)
         {
             Data.Models.Remove(saveJson);
+        }
+
+        /// <summary>
+        /// 클래스를 Json화 합니다
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        private string ToJson<T>(T instance) where T : class
+        {
+            string json = JsonUtility.ToJson(instance);
+            return json;
+        }
+
+        /// <summary>
+        /// json을 클래스화 합니다
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        private T FromJson<T>(string json)
+        {
+            T model = JsonUtility.FromJson<T>(json);
+            return model;
         }
     }
 }

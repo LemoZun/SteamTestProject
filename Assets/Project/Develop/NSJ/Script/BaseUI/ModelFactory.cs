@@ -8,9 +8,9 @@ namespace NSJ_MVVM
         /// <summary>
         /// 모델과 뷰모델을 생성하는 팩토리 메서드입니다.
         /// </summary>
-        public static TModel CreateModel<TModel, TViewModel>(MonoBehaviour owner)
+        public static TModel CreateModel<TModel, TViewModel>(MonoBehaviour owner, out TViewModel vm)
             where TModel : BaseModel, ICopyable<TModel>, new()
-            where TViewModel : BaseViewModel<TModel, TViewModel>, new()
+            where TViewModel : BaseViewModel<TModel>, new()
         {
      
 
@@ -23,10 +23,11 @@ namespace NSJ_MVVM
 
             // 알맞은 뷰에 뷰모델 의존성을 주입
 
-            ViewResistry<TViewModel>.TryBind(viewModel);
+            //ViewResistry<TViewModel>.TryBind(viewModel);
 
             AutoBinding.Bind(model, owner);
 
+            vm = viewModel;
             return model;
         }
     }

@@ -1,21 +1,20 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace NSJ_MVVM
 {
-    public class ViewResistry<TViewModel> where TViewModel : BaseViewModel
+    public class ViewResistry<TView> where TView : IView
     {
-        private static ViewResistry<TViewModel> _instance;
-        public static ViewResistry<TViewModel> Instance
+        private static ViewResistry<TView> _instance;
+        public static ViewResistry<TView> Instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new ViewResistry<TViewModel>();
+                    _instance = new ViewResistry<TView>();
                     SceneManager.sceneUnloaded += ClearUnUsed;
                 }
                 return _instance;
@@ -26,13 +25,13 @@ namespace NSJ_MVVM
         {
             public bool HasViewID;
             public int ViewID;
-            public List<IView<TViewModel>> Views = new List<IView<TViewModel>>();
-            public TViewModel ViewModel;
+            public List<IView> Views = new List<IView>();
+            public IViewModel ViewModel;
 
             public bool IsAvailable => ViewModel == null;
-            public bool IsMahch(TViewModel viewModel) =>
+            public bool IsMahch(IViewModel viewModel) =>
                 Views[0].HasViewID && viewModel.HasViewID.Value && Views[0].ViewID == viewModel.ViewID.Value;
-            public BindingEntry(IView<TViewModel> view, TViewModel viewModel)
+            public BindingEntry(IView view, IViewModel viewModel)
             {
                 Views.Add(view);
                 ViewModel = viewModel;
@@ -48,13 +47,13 @@ namespace NSJ_MVVM
         /// <summary>
         /// 뷰모델을 지연 저장하기 위한 큐입니다. 뷰가 없을 때 뷰모델을 저장합니다.
         /// </summary>
-        private List<TViewModel> _viewModelStroage;
+        private List<IViewModel> _viewModelStroage;
 
         /// <summary>
         /// 뷰모델과 뷰를 바인딩하는 레지스트리입니다.
         /// </summary>
         /// <param name="view"></param>
-        public static void Resister(IView<TViewModel> view)
+        public static void Resister(TView view)
         {
 
             if (Instance._bindings == null)
@@ -79,7 +78,7 @@ namespace NSJ_MVVM
                 // 뷰모델이 ViewID를 가지고 있는지 확인합니다.
                 if (view.HasViewID == true)
                 {
-                    TViewModel viewModel = null;
+                    IViewModel viewModel = null;
                     // ViewID값이 존재하는 경우 해당 뷰모델을 꺼내서 뷰에 설정합니다.
                     for (int i = 0; i < Instance._viewModelStroage.Count; i++)
                     {
@@ -120,7 +119,7 @@ namespace NSJ_MVVM
                 else
                 {
                     // VIewID값이 Default인 경우, 지연 저장 리스트에서 첫번째 뷰모델을 꺼내서 뷰에 설정합니다.
-                    TViewModel viewModel = Instance._viewModelStroage[0];
+                    IViewModel viewModel = Instance._viewModelStroage[0];
                     view.OnSetViewModel(viewModel);
                     // 바인딩 됬음을 표시합니다
                     Instance._bindings[index].ViewModel = viewModel;
@@ -134,7 +133,7 @@ namespace NSJ_MVVM
         /// 뷰의 삭제시에 바인딩을 해제하는 레지스트리입니다.
         /// </summary>
         /// <param name="view"></param>
-        public static void UnResister(IView<TViewModel> view)
+        public static void UnResister(IView view)
         {
             view.OnRemoveViewModel();
             // 뷰모델 해제
@@ -146,10 +145,10 @@ namespace NSJ_MVVM
         /// </summary>
         /// <param name="viewModel"></param>
         /// <returns></returns>
-        public static bool TryBind(TViewModel viewModel)
+        public static bool TryBind(IViewModel viewModel)
         {
             if (Instance._viewModelStroage == null)
-                Instance._viewModelStroage = new List<TViewModel>();
+                Instance._viewModelStroage = new List<IViewModel>();
 
             if (Instance._viewModelStroage.Contains(viewModel) == false)
             {
@@ -164,7 +163,7 @@ namespace NSJ_MVVM
             if (Instance._bindings.Any(x => x.ViewModel == viewModel))
                 return true;// 이미 바인딩된 뷰모델이므로 true 반환
 
-            List<IView<TViewModel>> targetViews = null;
+            List<IView> targetViews = null;
             // 뷰모델에 바인딩된 뷰를 찾습니다.
             // 뷰모델이 로드되지 않은경우도 찾습니다
             if (viewModel.HasViewID.Value == false || viewModel.IsLoaded.Value == false)
@@ -199,7 +198,7 @@ namespace NSJ_MVVM
         /// </summary>
         /// <param name="viewModel"></param>
         /// <returns></returns>
-        public static bool TryRebind(TViewModel viewModel)
+        public static bool TryRebind(IViewModel viewModel)
         {
             if (Instance._bindings == null)
                 return false;
@@ -212,7 +211,7 @@ namespace NSJ_MVVM
                 int index = Instance._bindings.FindIndex(v => v.ViewModel == viewModel);
                 if (index >= 0)
                 {
-                    List<IView<TViewModel>> targetViews = Instance._bindings[index].Views;
+                    List<IView> targetViews = Instance._bindings[index].Views;
                     SetViewModelToViews(targetViews, viewModel);
                     return true;
                 }
@@ -221,7 +220,7 @@ namespace NSJ_MVVM
                 index = Instance._bindings.FindIndex(v => v.IsAvailable);
                 if (index >= 0)
                 {
-                    List<IView<TViewModel>> targetViews = Instance._bindings[index].Views;
+                    List<IView> targetViews = Instance._bindings[index].Views;
                     SetViewModelToViews(targetViews, viewModel);
                     Instance._bindings[index].ViewModel = viewModel;
                     return true;
@@ -234,7 +233,7 @@ namespace NSJ_MVVM
                 int index = Instance._bindings.FindIndex(v => v.IsMahch(viewModel));
                 if (index >= 0)
                 {
-                    List<IView<TViewModel>> targetViews = Instance._bindings[index].Views;
+                    List<IView> targetViews = Instance._bindings[index].Views;
 
                     // 원래 매핑되있던 뷰의 뷰모델 제거 후 바인딩 안된 리스트로옮깁니다.
                     int oldIndex = Instance._bindings.FindIndex(v => v.ViewModel == viewModel);
@@ -261,7 +260,7 @@ namespace NSJ_MVVM
         /// <summary>
         /// 뷰모델 제거하여 바인딩
         /// </summary>
-        public static bool TryRebind(IView<TViewModel> view)
+        public static bool RemoveRebind(IView view)
         {
             if (Instance._bindings == null)
                 return false;
@@ -285,15 +284,15 @@ namespace NSJ_MVVM
         /// </summary>
         /// <param name="view"></param>
         /// <returns></returns>
-        public static bool TryRebind(IView<TViewModel> viewA, IView<TViewModel> viewB)
+        public static bool ExchangeRebind(IView viewA, IView viewB)
         {
             if (Instance._bindings == null)
                 return false;
             if (viewA == null || viewB == null || viewA == viewB)
                 return false;
 
-            TViewModel viewModelA = null;
-            TViewModel viewModelB = null;
+            IViewModel viewModelA = null;
+            IViewModel viewModelB = null;
             // 기존 뷰A에 있던 뷰모델 제거
             int AIndex = Instance._bindings.FindIndex(x => x.ViewID == viewA.ViewID);
             if (AIndex >= 0)
@@ -331,7 +330,7 @@ namespace NSJ_MVVM
 
         }
 
-        private static void AddViewToBinding(IView<TViewModel> targetView)
+        private static void AddViewToBinding(IView targetView)
         {
 
             int index = Instance._bindings.FindIndex(v => v.ViewID == targetView.ViewID);
@@ -344,13 +343,13 @@ namespace NSJ_MVVM
                 Instance._bindings.Add(new BindingEntry(targetView, null));
             }
         }
-        private static void RemoveViewFromBinding(IView<TViewModel> targetView)
+        private static void RemoveViewFromBinding(IView targetView)
         {
             // 뷰모델 해제
             int index = Instance._bindings.FindIndex(x => x.ViewID == targetView.ViewID);
             if (index >= 0)
             {
-                List<IView<TViewModel>> views = Instance._bindings[index].Views;
+                List<IView> views = Instance._bindings[index].Views;
 
                 index = views.FindIndex(x => x == targetView);
                 if (index >= 0)
@@ -360,17 +359,17 @@ namespace NSJ_MVVM
             }
         }
 
-        private static void SetViewModelToViews(List<IView<TViewModel>> views,TViewModel viewModel)
+        private static void SetViewModelToViews(List<IView> views,IViewModel viewModel)
         {
-            foreach (IView<TViewModel> view in views)
+            foreach (IView view in views)
             {
                 view.OnSetViewModel(viewModel);
             }
             viewModel.IsLoaded.Value = true;
         }
-        private static void RemoveViewModelToViews(List<IView<TViewModel>> views)
+        private static void RemoveViewModelToViews(List<IView> views)
         {
-            foreach (IView<TViewModel> view in views)
+            foreach (IView view in views)
             {
                 view.OnRemoveViewModel();
             }

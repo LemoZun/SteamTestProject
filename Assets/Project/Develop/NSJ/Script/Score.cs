@@ -7,15 +7,21 @@ public class Score : MonoBehaviour
 {
     [SerializeField] bool isSecond;
     [SerializeField] ScoreModel _model;
+
+    private RedScoreViewModel _vm;
+
     private void Awake()
     {
-        _model = ModelFactory.CreateModel<ScoreModel, ScoreViewModel>(this);
+        _model = ModelFactory.CreateModel<ScoreModel, RedScoreViewModel>(this, out _vm);
+
         _model.CanSave = true;
     }
 
     private void Start()
     {
         _model.LoadData<ScoreModel>();
+
+        ViewResistry<ScoreView>.TryRebind(_vm);
     }
     private void Update()
     {
@@ -47,12 +53,15 @@ public class Score : MonoBehaviour
     }
 }
 
-
 [System.Serializable]
 public class ScoreModel : BaseModel, ICopyable<ScoreModel>
 {
+
     [SerializeField] private int _score;
     public int Score { get { return _score; } set { _score = value; OnScoreChange?.Invoke(value); } }
+
+
+
     public Action<int> OnScoreChange;
 
     public void ChangeScore(int value)

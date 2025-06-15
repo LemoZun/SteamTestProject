@@ -5,12 +5,22 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEditor.Profiling.HierarchyFrameDataView;
 
 public class ScoreView : BaseView<ScoreViewModel>
 {
 
     private TMP_Text _score;
 
+    protected override void InitAwake()
+    {
+        ViewResistry<ScoreView>.Resister(this);
+
+        _score = GetUI<TMP_Text>("ScoreText");
+    }
+    protected override void InitStart()
+    {
+    }
     protected override void OnViewModelSet()
     {
         Model?.Score.Bind(UpdateText);
@@ -18,11 +28,6 @@ public class ScoreView : BaseView<ScoreViewModel>
     protected override void OnViewModelRemoved()
     {
         Model?.Score.UnBind(UpdateText);;
-    }
-
-    protected override void InitAwake()
-    {
-        _score = GetUI<TMP_Text>("ScoreText");
     }
     protected override void SubscribeEvents()
     {
@@ -39,12 +44,35 @@ public class ScoreView : BaseView<ScoreViewModel>
         _score.text = "0";
     }
 
-    protected override void InitStart()
+
+
+    public override void Register()
     {
+        ViewResistry<ScoreView>.Resister(this);
+    }
+
+    public override void UnResister()
+    {
+        ViewResistry<ScoreView>.UnResister(this);
+    }
+
+    public override void RemoveViewModel()
+    {
+        ViewResistry<ScoreView>.RemoveRebind(this);
+    }
+
+    public override void ExchangeViewModel(IView<ScoreViewModel> otherView)
+    {
+        ViewResistry<ScoreView>.ExchangeRebind(this, otherView);
     }
 }
 
-public class ScoreViewModel : BaseViewModel<ScoreModel, ScoreViewModel>
+public class RedScoreViewModel: ScoreViewModel
+{
+
+}
+
+public class ScoreViewModel : BaseViewModel<ScoreModel>
 {
     public Bindable<int> Score;
 

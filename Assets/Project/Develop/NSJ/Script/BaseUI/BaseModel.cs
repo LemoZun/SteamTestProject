@@ -8,17 +8,18 @@ namespace NSJ_MVVM
     [System.Serializable]
     public abstract class BaseModel
     {
-        public bool CanSave { get { return _canSave; } set { _canSave = value; OnCansSaveChanged?.Invoke(value); } }
+        public bool CanSave { get { return _canSave; } set { _canSave = value; OnCanSaveChanged?.Invoke(value); } }
         public bool IsLoaded { get { return _isLoaded; } set { _isLoaded = value; OnIsLoadedChanged?.Invoke(value); } }
         public bool HasViewID { get { return _hasViewID; } set { _hasViewID = value; OnHasViewIDChanged?.Invoke(value); } }
         public int ViewID { get { return _viewID; } set { _viewID = value; OnViewIDChanged?.Invoke(value); } }
 
-        public event Action<bool> OnCansSaveChanged;
+        public event Action<bool> OnCanSaveChanged;
         public event Action<bool> OnIsLoadedChanged;
         public event Action<bool> OnHasViewIDChanged;
         public event Action<int> OnViewIDChanged;
 
         [Tooltip("세이브 여부")]
+  
         [SerializeField] public bool _canSave;
         [SerializeField] public bool _isLoaded;
         [SerializeField] public bool _hasViewID;

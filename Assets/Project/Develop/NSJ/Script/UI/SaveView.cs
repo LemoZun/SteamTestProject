@@ -10,6 +10,7 @@ public class SaveView : BaseView<SaveViewModel>
 {
     private Button _save;
 
+
     protected override void ClearView()
     {
         
@@ -45,6 +46,31 @@ public class SaveView : BaseView<SaveViewModel>
         SaveManager.Instance.SaveData();
         SceneManager.LoadScene("TitleScene");
     }
+
+
+
+    public override void Register()
+    {
+        ViewResistry<SaveView>.Resister(this);
+       
+    }
+
+    public override void RemoveViewModel()
+    {
+        ViewResistry<SaveView>.UnResister(this);
+  
+    }
+
+    public override void UnResister()
+    {
+        ViewResistry<SaveView>.RemoveRebind(this);
+    }
+    public override void ExchangeViewModel(IView<SaveViewModel> otherView)
+    {
+
+        ViewResistry<SaveView>.ExchangeRebind(this,otherView);
+    }
+
 }
 
 public class SaveViewModel : BaseViewModel

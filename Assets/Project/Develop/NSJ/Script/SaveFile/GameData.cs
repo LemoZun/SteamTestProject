@@ -9,4 +9,7 @@ public class GameData
     public double TotalPlayTime;
 
     public List<string> Models = new List<string>();
+
+
+    public List<string> FailedLoadModels = new List<string>();
 }

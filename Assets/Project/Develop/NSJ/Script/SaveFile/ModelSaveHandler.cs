@@ -1,18 +1,16 @@
 using NSJ_MVVM;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace NSJ_SaveUtility
 {
-    public class ModelSaveHandler 
+    public class ModelSaveHandler
     {
         private readonly BaseModel _model;
 
         public ModelSaveHandler(BaseModel model)
         {
-            _model = model; 
+            _model = model;
         }
 
         public void Save<TModel>() where TModel : BaseModel
@@ -57,6 +55,25 @@ namespace NSJ_SaveUtility
                     break;
                 }
             }
+            // 로드에 실패한 경우 SaveManager에서 잔여 모델에 대해 강제 로딩을 시도합니다
+            if (loadData == null)
+            {
+                if (SaveManager.Instance.TryReload(_model as TModel, out TModel returnModel))
+                {
+                    loadData = returnModel;
+                    if (loadData != null) 
+                    {
+                        Debug.Log("타입캐스팅 성공");
+
+                    }
+                    else
+                    {
+                        Debug.Log("타입캐스팅 실패");
+                    }
+                }
+            }
+
+
             // 모델의 속성에 복사합니다.
             AllCopyFrom(loadData);
         }

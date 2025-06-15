@@ -5,9 +5,11 @@ using UnityEngine;
 public class TestEnemy : MonoBehaviour
 {
     [SerializeField] private TestEnemyModel _model;
+
+    private TestEnemyViewModel _vm;
     private void Awake()
     {
-        _model = ModelFactory.CreateModel<TestEnemyModel,TestEnemyViewModel>(this);
+        _model = ModelFactory.CreateModel<TestEnemyModel,TestEnemyViewModel>(this, out _vm);
     }
 
     private void Start()
@@ -27,7 +29,11 @@ public class TestEnemy : MonoBehaviour
 [System.Serializable]
 public class TestEnemyModel : BaseModel, ICopyable<TestEnemyModel>
 {
+
     public string name;
+
+
+
     public void CopyFrom(TestEnemyModel model)
     {
         name = model.name;
@@ -44,7 +50,7 @@ public class TestEnemyModel : BaseModel, ICopyable<TestEnemyModel>
     }
 }
 
-public class TestEnemyViewModel : BaseViewModel<TestEnemyModel, TestEnemyViewModel>
+public class TestEnemyViewModel : BaseViewModel<TestEnemyModel>
 {
     protected override void OnModelSet()
     {
