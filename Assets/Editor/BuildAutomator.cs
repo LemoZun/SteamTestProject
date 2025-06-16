@@ -14,7 +14,7 @@ public static class BuildAutomator
 
         var options = new BuildPlayerOptions
         {
-            locationPathName = "D:\\Builds\\GameBuild.exe",
+            locationPathName = "Builds\\GameBuild.exe",
             scenes = new[] { "Assets\\Scenes\\SampleScene.unity" },
             target = BuildTarget.StandaloneWindows,
             options = BuildOptions.None
@@ -22,8 +22,9 @@ public static class BuildAutomator
 
         BuildPipeline.BuildPlayer((options));
 
-    }
+    } 
     
+    // cmd 창에 : "경로\Unity.exe" -quit -batchmode -logFile "로그파일 경로\Logs\파일이름.log" -executeMethod "BuildAutomator"."Build" -projectPath "경로\프로젝트폴더" 
     
     public static void BuildAll()
     {
