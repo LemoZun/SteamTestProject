@@ -87,6 +87,9 @@ namespace NSJ_SaveUtility
             return success;
         }
 
+        /// <summary>
+        /// 세이브ID 매칭 실패로인한 데이터 로드 실패시에 강제 타입 캐스팅 로드용 메소드
+        /// </summary>
         public bool TryReload<TModel>(TModel model, out TModel returnModel) where TModel : BaseModel, ICopyable<TModel>
         {
             returnModel = null;
