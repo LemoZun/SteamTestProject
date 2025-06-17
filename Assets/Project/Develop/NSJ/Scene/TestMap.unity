@@ -154,6 +154,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &67220751
 SpriteRenderer:
@@ -254,6 +258,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &96313429
 SpriteRenderer:
@@ -354,6 +362,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &133059862
 SpriteRenderer:
@@ -468,8 +480,8 @@ MonoBehaviour:
   - {fileID: 2055994801}
   - {fileID: 202435057}
   - {fileID: 306357871}
-  _roomCount: 12
-  _maxAddtionalEdgeCount: 2
+  _roomCount: 9
+  _maxAddtionalEdgeCount: 0
 --- !u!4 &149777814
 Transform:
   m_ObjectHideFlags: 0
@@ -517,6 +529,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &202435058
 SpriteRenderer:
@@ -617,6 +633,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &226527879
 SpriteRenderer:
@@ -717,6 +737,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &238236407
 SpriteRenderer:
@@ -817,6 +841,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &306357872
 SpriteRenderer:
@@ -917,6 +945,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &392490673
 SpriteRenderer:
@@ -1017,6 +1049,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &545173395
 SpriteRenderer:
@@ -1117,6 +1153,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &891037663
 SpriteRenderer:
@@ -1217,6 +1257,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &896585659
 SpriteRenderer:
@@ -1317,6 +1361,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &1024274412
 SpriteRenderer:
@@ -1501,6 +1549,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &1657503706
 SpriteRenderer:
@@ -1601,6 +1653,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &1790331549
 SpriteRenderer:
@@ -1701,6 +1757,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &1839612281
 SpriteRenderer:
@@ -1801,6 +1861,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedRooms: []
   _model:
+    _canSave: 0
+    _isLoaded: 0
+    _hasViewID: 0
+    _viewID: 0
     Type: 0
 --- !u!212 &2055994802
 SpriteRenderer:
